@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin>
+
+  <meta>
+    <author>BKR</author>
+    <description lang="en">
+     Takes a compound and tries to find it in the NIST Webbook. 
+     When successful, it tries to fetch the name and CAS number.
+    </description>
+	 <description lang="de">
+     Ein Molekül wird beim NIST Webbook gesucht und der Name 
+     und die CAS-Nummer werden importiert
+    </description>
+    <description lang="es">
+      Toma un compuesto y lo busca en NIST WebBook. Si lo encuentra, 
+      intenta obtener el nombre y el número CAS.
+    </description>
+  </meta>
+
+  <source>
+    <file>fetch_name_from_webbook.py</file>
+    <menu-text lang="en">Get Name (NIST Webbook)</menu-text>
+    <menu-text lang="de">Suche Name (NIST Webbook)</menu-text>
+    <menu-text lang="es">Obtener nombre (NIST WebBook)</menu-text>
+  </source>
+</plugin>

@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Simple drawing</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="BKChem"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Drawing"
+HREF="c26.html"><LINK
+REL="PREVIOUS"
+TITLE="Drawing"
+HREF="c26.html"><LINK
+REL="NEXT"
+TITLE="Modifying the drawing"
+HREF="x83.html"></HEAD
+><BODY
+CLASS="sect1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>BKChem</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c26.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Drawing</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x83.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="sect1"
+><H1
+CLASS="sect1"
+><A
+NAME="AEN56"
+>2.2. Simple drawing</A
+></H1
+><DIV
+CLASS="sect2"
+><H2
+CLASS="sect2"
+><A
+NAME="AEN58"
+>2.2.1. Bond-by-bond drawing</A
+></H2
+><P
+>The bond-by-bond drawing in BKChem is performed in the "draw mode".</P
+><P
+>The drawing is realized in a very intuitive way. You can just click on the
+	    drawing canvas and two atoms with a single bond between them will appear. By default the
+	    atoms are carbons and their symbol is not drawn. When you change the atom symbol to
+	    something else the symbol will appear. To attach more atoms to the currently drawn two, just
+	    focus one of them and click a mouse. By default the new atoms are added so that the new bond
+	    has angle of 120 deg. If you want to change that you can instead of a click on focused atom use
+	    dragging. Press down a mouse button on a focused atom and without releasing it move the
+	    mouse. You will find out that the new bond is drawn in a direction of your mouse move and
+	    keeps moving while you keep dragging. To help you with precision of the drawing, there are
+	    several possible resolutions of the angle produced by dragging. The default is 30deg and is
+	    suitable for usual drawing (perfect for 6 membered rings). The resolution of 18deg is great
+	    for five membered rings and the others (6 and 1) are for finer work. For completely
+	    freestyle drawing use the "freestyle" submode.</P
+><P
+>To create double or triple bonds, just click on a bond in a "draw mode" and the bond
+	    order will increase by 1. After triple bond it will fall back to simple bond. This way you
+	    can also change the centering of the double bond (whether the two lines that form double
+	    bond will be centered and when not on which side the second line will appear). If you only
+	    want to change the centering of double bond you can just click it while holding "Shift"
+	    key.</P
+><P
+>By changing the bond type of drawn bonds you can create stereo-bonds.</P
+></DIV
+><DIV
+CLASS="sect2"
+><H2
+CLASS="sect2"
+><A
+NAME="AEN64"
+>2.2.2. Templates</A
+></H2
+><P
+>BKChem comes with set of ready-to-use templates of common rings. To use them just
+	    select the "template mode" and then select a template.</P
+><P
+>The behavior of template depends on where you place it. Clicking on the canvas
+	    just creates the molecule from the template. Clicking on atoms or bonds attaches the
+	    template to the existing molecule in different ways (depending on whether you clicked bond
+	    or atom and whether the atom had one or more other bonds) - just try it to see.</P
+></DIV
+><DIV
+CLASS="sect2"
+><H2
+CLASS="sect2"
+><A
+NAME="AEN68"
+>2.2.3. Arrows</A
+></H2
+><P
+>For drawing of arrows use "arrow mode". The way to draw arrow resembles bond-by-bond
+	    drawing of molecules. The arrow can be extended from both sides points can be even inserted
+	    inside the arrow. To draw arrows in different than horizontal position used the dragging
+	    while drawing.</P
+><P
+>You can select on which side the arrow-head will be drawn by clicking the arrow (the
+	    line, not the point) in the arrow mode. The arrow-head position will cycle in the
+	    start-end-both-none cycle (so you can use the arrow also for drawing lines).</P
+><P
+>To change the appearance of existing arrow you can move individual points (after you
+	  select them - see the following parts of this chapter.</P
+></DIV
+><DIV
+CLASS="sect2"
+><H2
+CLASS="sect2"
+><A
+NAME="AEN73"
+>2.2.4. Text</A
+></H2
+><P
+>Most of this section applies not only to texts but also to atoms that have visible
+	    text. To create or modify the text use the "text mode". The text can be set in any
+	    mode (there is a difference between setting and modifying text - when modifying text you
+	    can just change it, when setting it you have to retype the whole sequence).</P
+><DIV
+CLASS="sect3"
+><H3
+CLASS="sect3"
+><A
+NAME="AEN76"
+>2.2.4.1. Text formatting</A
+></H3
+><P
+>To give the user a simple way to alter the font properties of text (italic, bold,
+	      subscript and superscript) the text is entered as an XML fragment. You do not specify
+	      the enclosing tag (this is done automatically by the program), just the formating. For
+	      instance the text "hi, &#60;i&#62;are you ready
+	      to &#60;b&#62;rock&#60;/b&#62;&#60;/i&#62;?" will display "are you ready to" as italic and "rock" as
+	      bold-italic. For subscript and superscript use &#60;sub&#62; and &#60;sup&#62; respectively.</P
+><P
+>When using XML formating there is a problem with using characters as &#60; and &#38;
+	      because they are treated as special in XML. When you enter some text such as "a&#60;b"
+	      that cannot be parsed as XML, the program will automatically "escape" all the special
+	      characters, thus giving you the right result. When you need only some of the special
+	      characters to be escaped (e.g. for &#60;i&#62;a&#60;b&#60;/i&#62;" you want to escape the &#60; only
+	      in the "a&#60;b") you must do it manually. This means entering an "escape sequence" instead
+	      of the special character. For "&#60;" use "&#38;lt;" and for "&#38;" use "&#38;amp;" (and
+	      "&#38;amp;amp;" for "&#38;amp;" :). Easy, isn't it?</P
+></DIV
+><DIV
+CLASS="sect3"
+><H3
+CLASS="sect3"
+><A
+NAME="AEN80"
+>2.2.4.2. Setting and modifying text</A
+></H3
+><P
+>When you hit a "Space" button with some atoms or texts selected or when you click
+	    an atom or text in "text mode" or click the canvas in "text mode", the "edit pool" will
+	    be activated letting you enter your text. To apply the entered text hit "Enter" or press
+	    one of the buttons on side of "edit pool". To cancel the action hit "Escape". The three
+	    buttons are used for setting text in different modes. The "Set" button serves for
+	    applying the text just as it was entered, "Set &#38; Interpret" will search the inner
+	    database of BKChem to find if the entered text has some known interpretation. The
+	    "Sub-numbers" is used to turn all numbers in subscript and is useful for molecular
+	    formulas that are not known to BKChem.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c26.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x83.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Drawing</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c26.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Modifying the drawing</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

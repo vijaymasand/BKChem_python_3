@@ -1,0 +1,4 @@
+Pmw>=2.1.1
+Pillow>=9.0.0
+pycairo>=1.20.0; sys_platform != 'win32'
+# Note: pycairo on Windows might require manual installation or specific wheels

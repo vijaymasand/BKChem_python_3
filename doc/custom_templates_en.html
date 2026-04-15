@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Creating custom templates</title>
+  </head>
+  <body>
+    <h2>How to create a custom template</h2>
+
+    <h3>Foreword</h3>
+
+    <p>Even if the possibility to create custom templates in BKChem existed from the version 0.1.0, there was no way
+    how to actually use them afterwards and therefore it was not documented. Starting from BKChem version 0.9.0-pre1 a special mode
+    for custom templates was added and here is the documentation how to use it.</p>
+
+    <h3>How to do it?</h3>
+    <p>Creating a new template is straightforward and easy, however not so easy as you might think :).
+    Even if it would be possible for the program to guess how to attach the template to another molecule
+    when you use it, I did not implement anything like this, because explicit is usually better than
+    implicit. Therefore you have to tell BKChem which position you would like to use for attaching a template
+    to a new molecule and which bond should be used when you click on a bond in an existing molecule.</p>
+
+    <p>I will demonstrate the process on creating a template of naphthalene-2-yl. To do so, you have to draw naphthalene
+    and then add a substituent (usually methyl but it does not matter as this atom is ignored) to the position
+    you would like this template to connect with. In this case to the position 2.</p>
+
+    <!--<img src="../img/custom_templates-1.png" alt="screenshot 1"/>-->
+
+    <p>Now we have to tell BKChem which atom is the <i>template atom</i> - the atom that marks the position of
+    molecule concatenation. To do it, you have to switch to the <i>template mode</i> (click on the
+    cyclohexane icon in the upper button menu), focus the atom you want to mark (put the cursor above it so
+    that a circle appears around it) and hit the keys <b>C-t</b> (press <b>t</b> while holding the
+    <b>Control</b> key). In the status bar a message "<i>focused atom was marked template atom</i>"
+    should appear.</p>
+
+    <p><b>NOTE:</b> The <i>template atom</i> is deleted when you use the template, it serves only
+    as a marker to precisely specify the direction and distance in which to place the template.</p>
+
+    <img src="img/custom_templates-2.png" alt="screenshot 2"/>
+
+    <p>Now we have to specify the bond that will be used when you want to add the template to a bond and not to an atom
+    (as for instance when you create the naphthalene molecule from 2 benzene molecules). The procedure is the same as for an atom,
+    however in this case the bond really exists in the molecule and is not deleted when the template is used. You have to <i>focus</i>
+    the bond in <i>template mode</i> and hit <b>C-t</b>. You will get a message informing you that the focused bond was marked
+    as <i>template bond</i>.</p>
+
+   <p>Now, as the access points of the template are defined, only one thing remains to be done and this is to name your template.
+   You can do it by selecting the molecule or any part of it and using the <i>Menu/Chemistry/Set molecule name</i> command. Under this name you
+   will be able to access the prepared template.</p>
+
+
+    <p>The only thing that remains now, is to store the newly created template in a directory where BKChem can find it.
+    This directory is site-dependent - on Unix systems its <i>~/.bkchem/templates/</i> on Windows <i>.bkchem/templates</i> in
+    the directory where BKChem is installed. You can do it either by hand, or use the command <i>Save As Template</i> in the 
+    <i>File</i> menu, which will also check the content of the file and warn you when there is some problem with your template(s).</p>
+
+    <p>Now, when everything went OK, you can restart BKChem and you should see your newly created templates in the menu of the
+    <i>Custom templates mode</i>.</p>
+
+    <h3>Last word</h3>
+
+    <p>I welcome any suggestions and bug reports related to this text, the procedures described here or BKChem in general
+    on my <a href="mailto:beda@zirael.org">email address</a>.</p>
+
+  </body>
+</html>

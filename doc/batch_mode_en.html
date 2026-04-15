@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Using BKChem in batch mode</title>
+  </head>
+  <body>
+    <h2>Using BKChem in batch mode</h2>
+
+    <h3>Foreword</h3>
+
+    <p>In version <b>0.9.0</b> of BKChem I have introduced an undocumented batch mode.
+    Depending on command line switches BKChem converted all given files of one type to another etc.
+    The problem of this approach was that it would be necessary to implement a huge number of 
+    command line switches to give the user at least some power to do what he wants.</p>
+
+    <p>From version <b>0.10.0-pre1</b> I have decided to use a completely different approach, based on my
+    experience with custom plugins. In this version, there is only one command line switch (-b) that
+    tells BKChem to start in batch mode. The following argument is a name of a Python script to run.
+    </p>
+
+
+    <h3>How does a batch script work</h3>
+
+    <p>When you start BKChem in batch mode it at first starts all its vital parts and
+    then gives control to the Python script given on command line. All this happens without actually
+    displaying a BKChem window (even though the window is in fact created, so it does not work
+    without X on Unix). After the script has finished its work and the control returns back
+    to BKChem, the program simply terminates.</p>
+
+    <p>The anatomy of a batch script is very similar to that of a
+    <a href="custom_plugins_en.html">custom plugin</a>. The script receives a global variable
+    <i>App</i>, which is the actual BKChem instance. In case some further arguments are given on the
+    command line on startup, they are passed as a list in a global variable <i>Args</i>.
+    The script can use these variables in any way it wants, it can also use any standard Python
+    functions and modules.</p>
+
+
+    <h3>Sample batch script</h3>
+
+    <p>In this <a href="scripts/batch_demo1.py">file</a> you will find complete code of the example
+    discussed bellow. It is a simple batch script that loads all BKChem files in all directories
+    specified on command line, sets font size of all atoms to 12 and re-saves the files.
+    The most important parts of the batch script are discussed bellow.
+    </p>
+
+    <pre>
+if Args:
+  for arg in Args:
+    update_svgs_in_path( arg)
+else:
+  print "You must supply a path as first argument to the batch script"
+    </pre>
+
+    <p><i>Args</i> is together with <i>App</i> a global variable containing a list of command line
+    arguments given after the script name.</p>
+
+    <pre>
+  if App.load_CDML( f, replace=1):
+    print "OK"
+    for mol in App.paper.molecules:
+      for atom in mol.atoms:
+        atom.font_size = 12
+    App.save_CDML()
+    return 1
+  else:
+    print "ignoring"
+    return 0
+    </pre>
+
+    <p><i>App.load_CDML</i> returns true when a file is successfully loaded. The replace argument
+    tells BKChem to load the file replacing the current one (instead of opening a new tab), thus we
+    don't have to deal with closing tabs.</p>
+
+    <p>From the few lines presented above (and the whole script) in fact only 4 or 5 are really
+    interesting and do really do something. The rest is just a glue, comments and debugging
+    output. In fact writing a batch script could not be easier :)</p>
+
+    <p>Please feel free to send me any comments on my English, clarity of the above text and other
+    problems you may have with this brief tutorial.</p>
+
+
+
+  </body>
+</html>

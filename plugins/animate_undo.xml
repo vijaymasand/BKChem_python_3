@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin>
+
+  <meta>
+    <author email="beda@zirael.org">Beda Kosata</author>
+    <description lang="en">
+      Moves back to the first undo step and replays all the steps while saving
+      each of them into a file 'filename'-XX.svg, where XX is a number.
+    </description>
+    <description lang="de">
+      Macht alle Schritte rückgänging und wiederholt sie einzeln um sie in separate
+      Dateinen zu speichern. Die Dateien heißen: 'Dateiname'-XX.svg, wobei XX für eine Zahl steht. 
+    </description>
+  </meta>
+
+  <source>
+    <file>animate_undo.py</file>
+    <menu-text lang="en">Undo animation</menu-text>
+    <menu-text lang="de">Animiere Verlauf</menu-text>
+  </source>
+</plugin>

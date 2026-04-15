@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bkchem-py3"
+version = "1.0.4"
+authors = [
+  { name="Dr. Vijay Masand" },
+]
+description = "A modernized Python 3 port of the BKChem molecular editor."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "GNU General Public License v2 (GPLv2)"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Intended Audience :: Science/Research",
+]
+
+dependencies = [
+    "Pmw>=2.1.1",
+]
+
+[project.optional-dependencies]
+all = [
+    "Pillow>=9.0.0",
+    "pycairo>=1.20.0",
+]
+
+[project.scripts]
+bkchem = "bkchem.main:main"
+
+[project.urls]
+"Homepage" = "https://github.com/vijaymasand/BKChem_python_3"
+"Bug Tracker" = "https://github.com/vijaymasand/BKChem_python_3/issues"
+
+[tool.setuptools]
+# This line is crucial for your 'src' folder layout
+package-dir = {"" = "src"}
+packages = ["bkchem", "bkchem.oasa", "bkchem.oasa.oasa", "bkchem.oasa.oasa.graph", "bkchem.plugins", "bkchem.plugins.piddle"]
+
+[tool.setuptools.package-data]
+bkchem = ["pixmaps/*.gif", "images/*.png", "templates/*.cdml"]

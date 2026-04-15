@@ -1,0 +1,212 @@
+<?xml version="1.0" ?>
+<cdml version="0.13" xmlns="http://www.freesoftware.fsf.org/bkchem/cdml">
+  <info>
+    <author_program version="0.8.0-pre1">BKchem</author_program>
+  </info>
+  <paper crop_svg="1" orientation="portrait" type="A4"/>
+  <viewport viewport="0.000000 0.000000 640.000000 480.000000"/>
+  <standard area_color="#ffffff" font_family="helvetica" font_size="12" line_color="#000" line_width="1.0px" paper_crop_svg="0" paper_orientation="portrait" paper_type="A4">
+    <bond double-ratio="1.0" length="1.0cm" wedge-width="2.0px" width="6.0px"/>
+    <arrow length="1.6cm"/>
+  </standard>
+  <molecule id="molecule5473" name="CN">
+    <template atom="atom46180"/>
+    <atom id="atom46180" name="C">
+      <point x="2.033cm" y="2.338cm"/>
+    </atom>
+    <atom id="atom87247" name="C" pos="center-first" show="yes">
+      <point x="3.050cm" y="2.338cm"/>
+    </atom>
+    <atom id="atom27123" name="N" pos="center-first">
+      <point x="4.066cm" y="2.338cm"/>
+    </atom>
+    <bond double_ratio="1.0" end="atom87247" line_width="1.0" start="atom46180" type="n1"/>
+    <bond bond_width="-4.0" double_ratio="1.0" end="atom27123" line_width="1.0" start="atom87247" type="n3"/>
+  </molecule>
+  <molecule id="molecule66013" name="Me">
+    <template atom="atom5218"/>
+    <atom id="atom5218" name="C">
+      <point x="6.269cm" y="2.711cm"/>
+    </atom>
+    <atom hydrogens="on" id="atom16871" name="C" pos="center-first" show="yes">
+      <point x="7.150cm" y="2.203cm"/>
+    </atom>
+    <bond double_ratio="1.0" end="atom16871" line_width="1.0" start="atom5218" type="n1"/>
+  </molecule>
+  <molecule id="molecule53037" name="PPh3">
+    <template atom="atom59202"/>
+    <atom id="atom59202" name="C">
+      <point x="2.338cm" y="8.336cm"/>
+    </atom>
+    <atom id="atom37003" name="P" pos="center-first">
+      <point x="3.355cm" y="8.336cm"/>
+    </atom>
+    <atom id="atom43073" name="C">
+      <point x="3.355cm" y="7.320cm"/>
+    </atom>
+    <atom id="atom24991" name="C">
+      <point x="4.371cm" y="8.336cm"/>
+    </atom>
+    <atom id="atom12554" name="C">
+      <point x="3.355cm" y="9.353cm"/>
+    </atom>
+    <atom id="atom92124" name="C">
+      <point x="4.236cm" y="5.795cm"/>
+    </atom>
+    <atom id="atom85237" name="C">
+      <point x="4.236cm" y="6.811cm"/>
+    </atom>
+    <atom id="atom58498" name="C">
+      <point x="2.474cm" y="6.811cm"/>
+    </atom>
+    <atom id="atom65685" name="C">
+      <point x="3.355cm" y="5.286cm"/>
+    </atom>
+    <atom id="atom48320" name="C">
+      <point x="2.474cm" y="5.795cm"/>
+    </atom>
+    <atom id="atom44536" name="C">
+      <point x="5.896cm" y="9.217cm"/>
+    </atom>
+    <atom id="atom11357" name="C">
+      <point x="4.880cm" y="9.217cm"/>
+    </atom>
+    <atom id="atom38213" name="C">
+      <point x="4.880cm" y="7.455cm"/>
+    </atom>
+    <atom id="atom38036" name="C">
+      <point x="6.405cm" y="8.336cm"/>
+    </atom>
+    <atom id="atom29980" name="C">
+      <point x="5.896cm" y="7.455cm"/>
+    </atom>
+    <atom id="atom73645" name="C">
+      <point x="2.474cm" y="10.878cm"/>
+    </atom>
+    <atom id="atom68515" name="C">
+      <point x="2.474cm" y="9.861cm"/>
+    </atom>
+    <atom id="atom47211" name="C">
+      <point x="4.236cm" y="9.861cm"/>
+    </atom>
+    <atom id="atom65706" name="C">
+      <point x="3.355cm" y="11.386cm"/>
+    </atom>
+    <atom id="atom98140" name="C">
+      <point x="4.236cm" y="10.878cm"/>
+    </atom>
+    <bond double_ratio="1.0" end="atom37003" line_width="1.0" start="atom59202" type="n1"/>
+    <bond double_ratio="1.0" end="atom43073" line_width="1.0" start="atom37003" type="n1"/>
+    <bond double_ratio="1.0" end="atom24991" line_width="1.0" start="atom37003" type="n1"/>
+    <bond double_ratio="1.0" end="atom12554" line_width="1.0" start="atom37003" type="n1"/>
+    <bond bond_width="-6.0" center="no" double_ratio="1.0" end="atom48320" line_width="1.0" start="atom58498" type="n2"/>
+    <bond bond_width="-6.0" center="no" double_ratio="1.0" end="atom43073" line_width="1.0" start="atom85237" type="n2"/>
+    <bond bond_width="6.0" center="no" double_ratio="1.0" end="atom65685" line_width="1.0" start="atom92124" type="n2"/>
+    <bond double_ratio="1.0" end="atom85237" line_width="1.0" start="atom92124" type="n1"/>
+    <bond double_ratio="1.0" end="atom58498" line_width="1.0" start="atom43073" type="n1"/>
+    <bond double_ratio="1.0" end="atom48320" line_width="1.0" start="atom65685" type="n1"/>
+    <bond bond_width="-6.0" center="no" double_ratio="1.0" end="atom29980" line_width="1.0" start="atom38213" type="n2"/>
+    <bond bond_width="-6.0" center="no" double_ratio="1.0" end="atom24991" line_width="1.0" start="atom11357" type="n2"/>
+    <bond bond_width="6.0" center="no" double_ratio="1.0" end="atom38036" line_width="1.0" start="atom44536" type="n2"/>
+    <bond double_ratio="1.0" end="atom11357" line_width="1.0" start="atom44536" type="n1"/>
+    <bond double_ratio="1.0" end="atom38213" line_width="1.0" start="atom24991" type="n1"/>
+    <bond double_ratio="1.0" end="atom29980" line_width="1.0" start="atom38036" type="n1"/>
+    <bond bond_width="-6.0" center="no" double_ratio="1.0" end="atom98140" line_width="1.0" start="atom47211" type="n2"/>
+    <bond bond_width="-6.0" center="no" double_ratio="1.0" end="atom12554" line_width="1.0" start="atom68515" type="n2"/>
+    <bond bond_width="6.0" center="no" double_ratio="1.0" end="atom65706" line_width="1.0" start="atom73645" type="n2"/>
+    <bond double_ratio="1.0" end="atom68515" line_width="1.0" start="atom73645" type="n1"/>
+    <bond double_ratio="1.0" end="atom47211" line_width="1.0" start="atom12554" type="n1"/>
+    <bond double_ratio="1.0" end="atom98140" line_width="1.0" start="atom65706" type="n1"/>
+  </molecule>
+  <molecule id="molecule64630" name="Et">
+    <template atom="atom18117"/>
+    <atom id="atom18117" name="C">
+      <point x="12.504cm" y="2.609cm"/>
+    </atom>
+    <atom id="atom41532" name="C">
+      <point x="13.385cm" y="2.101cm"/>
+    </atom>
+    <atom id="atom67567" name="C">
+      <point x="14.266cm" y="2.609cm"/>
+    </atom>
+    <bond double_ratio="1.0" end="atom41532" line_width="1.0" start="atom18117" type="n1"/>
+    <bond double_ratio="1.0" end="atom67567" line_width="1.0" start="atom41532" type="n1"/>
+  </molecule>
+  <molecule id="molecule3405" name="COCl">
+    <template atom="atom78396"/>
+    <atom id="atom78396" name="C">
+      <point x="11.657cm" y="6.574cm"/>
+    </atom>
+    <atom id="atom66610" name="C">
+      <point x="12.538cm" y="6.066cm"/>
+    </atom>
+    <atom id="atom62638" name="Cl" pos="center-first">
+      <point x="13.419cm" y="6.574cm"/>
+    </atom>
+    <atom id="atom86019" name="O" pos="center-first">
+      <point x="12.538cm" y="5.049cm"/>
+    </atom>
+    <bond double_ratio="1.0" end="atom66610" line_width="1.0" start="atom78396" type="n1"/>
+    <bond double_ratio="1.0" end="atom62638" line_width="1.0" start="atom66610" type="n1"/>
+    <bond bond_width="6.0" center="yes" double_ratio="1.0" end="atom86019" line_width="1.0" start="atom66610" type="n2"/>
+  </molecule>
+  <molecule id="molecule17086" name="Ph">
+    <template atom="atom56138"/>
+    <atom id="atom31826" name="C">
+      <point x="9.048cm" y="10.573cm"/>
+    </atom>
+    <atom id="atom40974" name="C">
+      <point x="9.929cm" y="10.064cm"/>
+    </atom>
+    <atom id="atom69214" name="C">
+      <point x="10.810cm" y="10.573cm"/>
+    </atom>
+    <atom id="atom72790" name="C">
+      <point x="10.810cm" y="11.589cm"/>
+    </atom>
+    <atom id="atom32293" name="C">
+      <point x="9.048cm" y="11.589cm"/>
+    </atom>
+    <atom id="atom74091" name="C">
+      <point x="9.929cm" y="12.098cm"/>
+    </atom>
+    <atom id="atom56138" name="C">
+      <point x="11.691cm" y="10.064cm"/>
+    </atom>
+    <bond bond_width="-6.0" center="no" double_ratio="1.0" end="atom74091" line_width="1.0" start="atom72790" type="n2"/>
+    <bond bond_width="-6.0" center="no" double_ratio="1.0" end="atom69214" line_width="1.0" start="atom40974" type="n2"/>
+    <bond bond_width="6.0" center="no" double_ratio="1.0" end="atom32293" line_width="1.0" start="atom31826" type="n2"/>
+    <bond double_ratio="1.0" end="atom40974" line_width="1.0" start="atom31826" type="n1"/>
+    <bond double_ratio="1.0" end="atom72790" line_width="1.0" start="atom69214" type="n1"/>
+    <bond double_ratio="1.0" end="atom74091" line_width="1.0" start="atom32293" type="n1"/>
+    <bond double_ratio="1.0" end="atom56138" line_width="1.0" start="atom69214" type="n1"/>
+  </molecule>
+  <molecule id="molecule94231" name="OMe">
+    <template atom="atom44527" bond_first="atom48026" bond_second="atom44527"/>
+    <atom id="atom44527" name="C">
+      <point x="15.080cm" y="12.030cm"/>
+    </atom>
+    <atom id="atom48026" name="O" pos="center-first">
+      <point x="15.961cm" y="11.521cm"/>
+    </atom>
+    <atom id="atom79702" name="C">
+      <point x="16.842cm" y="12.030cm"/>
+    </atom>
+    <bond double_ratio="1.0" end="atom48026" line_width="1.0" start="atom44527" type="n1"/>
+    <bond double_ratio="1.0" end="atom79702" line_width="1.0" start="atom48026" type="n1"/>
+  </molecule>
+  <molecule id="molecule69369" name="CH2OH">
+    <template atom="atom38514"/>
+    <atom id="atom38514" name="C">
+      <point x="8.443cm" y="5.023cm"/>
+    </atom>
+    <atom id="atom46994" name="C">
+      <point x="9.309cm" y="4.523cm"/>
+    </atom>
+    <atom hydrogens="on" id="atom36995" name="O" pos="center-first">
+      <point x="10.175cm" y="5.023cm"/>
+    </atom>
+    <bond double_ratio="1.0" end="atom46994" line_width="1.0" start="atom38514" type="n1"/>
+    <bond double_ratio="1.0" end="atom36995" line_width="1.0" start="atom46994" type="n1"/>
+  </molecule>
+</cdml>

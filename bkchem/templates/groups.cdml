@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<cdml version="0.8" xmlns="http://www.freesoftware.fsf.org/bkchem/cdml">
+  <info>
+    <author_program version="0.2.0">BKchem</author_program>
+  </info>
+  <viewport viewport="0.000000 0.000000 640.000000 480.000000"/>
+  <molecule id="OCH3" name="OCH3">
+    <template atom="a175"/>
+    <atom id="a175" name="C">
+      <point x="62.0" y="75.0" z="0.0"/>
+    </atom>
+    <atom id="a177" name="O" pos="center-first">
+      <point x="88.0" y="60.0" z="0.0"/>
+    </atom>
+    <atom id="a179" name="C">
+      <point x="114.0" y="75.0" z="0.0"/>
+    </atom>
+    <bond end="a177" start="a175" type="s" width="1.0"/>
+    <bond end="a179" start="a177" type="s" width="1.0"/>
+  </molecule>
+  <molecule id="NO2" name="NO2">
+    <template atom="a182"/>
+    <atom id="a182" name="C">
+      <point x="185.0" y="90.0" z="0.0"/>
+    </atom>
+    <atom id="a184" name="N" pos="center-first">
+      <point x="211.0" y="75.0" z="0.0"/>
+    </atom>
+    <atom id="a187" name="O" pos="center-first">
+      <point x="237.0" y="90.0" z="0.0"/>
+    </atom>
+    <atom id="a190" name="O" pos="center-first">
+      <point x="211.0" y="45.0" z="0.0"/>
+    </atom>
+    <bond end="a184" start="a182" type="s" width="1.0"/>
+    <bond center="yes" distance="-6.0" end="a187" start="a184" type="d" width="1.0"/>
+    <bond center="yes" distance="6.0" end="a190" start="a184" type="d" width="1.0"/>
+  </molecule>
+  <molecule id="COOH" name="COOH">
+    <template atom="a199"/>
+    <atom id="a199" name="C">
+      <point x="325.0" y="96.0" z="0.0"/>
+    </atom>
+    <atom id="a200" name="C">
+      <point x="351.0" y="81.0" z="0.0"/>
+    </atom>
+    <atom id="a202" name="O" pos="center-first">
+      <point x="351.0" y="51.0" z="0.0"/>
+    </atom>
+    <atom id="a205" name="O" pos="center-first">
+      <point x="377.0" y="96.0" z="0.0"/>
+    </atom>
+    <bond end="a200" start="a199" type="s" width="1.0"/>
+    <bond center="yes" distance="6.0" end="a202" start="a200" type="d" width="1.0"/>
+    <bond end="a205" start="a200" type="s" width="1.0"/>
+  </molecule>
+  <molecule id="COOCH3" name="COOCH3">
+    <template atom="a212"/>
+    <atom id="a212" name="C">
+      <point x="464.0" y="95.0" z="0.0"/>
+    </atom>
+    <atom id="a213" name="C">
+      <point x="490.0" y="80.0" z="0.0"/>
+    </atom>
+    <atom id="a215" name="O" pos="center-first">
+      <point x="516.0" y="95.0" z="0.0"/>
+    </atom>
+    <atom id="a218" name="O" pos="center-first">
+      <point x="490.0" y="50.0" z="0.0"/>
+    </atom>
+    <atom id="a220" name="C">
+      <point x="542.0" y="80.0" z="0.0"/>
+    </atom>
+    <bond end="a213" start="a212" type="s" width="1.0"/>
+    <bond end="a215" start="a213" type="s" width="1.0"/>
+    <bond center="yes" distance="6.0" end="a218" start="a213" type="d" width="1.0"/>
+    <bond end="a220" start="a215" type="s" width="1.0"/>
+  </molecule>
+  <molecule id="SO3H" name="SO3H">
+    <template atom="a227"/>
+    <atom id="a227" name="C">
+      <point x="60.0" y="181.0" z="0.0"/>
+    </atom>
+    <atom id="a229" name="S" pos="center-first">
+      <point x="90.0" y="181.0" z="0.0"/>
+    </atom>
+    <atom id="a232" name="O" pos="center-first">
+      <point x="90.0" y="151.0" z="0.0"/>
+    </atom>
+    <atom id="a235" name="O" pos="center-first">
+      <point x="90.0" y="211.0" z="0.0"/>
+    </atom>
+    <atom id="a238" name="O" pos="center-first">
+      <point x="120.0" y="181.0" z="0.0"/>
+    </atom>
+    <bond end="a229" start="a227" type="s" width="1.0"/>
+    <bond center="yes" distance="-6.0" end="a232" start="a229" type="d" width="1.0"/>
+    <bond center="yes" distance="-6.0" end="a235" start="a229" type="d" width="1.0"/>
+    <bond end="a238" start="a229" type="s" width="1.0"/>
+  </molecule>
+</cdml>

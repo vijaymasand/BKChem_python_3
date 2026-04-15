@@ -1,0 +1,93 @@
+<!ELEMENT cdml (info?, standard?, ( molecule | arrow | plus | text)*)>
+
+    <!ATTLIST cdml
+        version         CDATA  #REQUIRED
+        type            (normal | template | standard) "normal">
+
+ <!ELEMENT info  (author*, author_program?, note*)>
+  <!ELEMENT author (#PCDATA)>
+  <!ELEMENT author_program (#PCDATA)>
+        <!ATTLIST author_program
+                version CDATA #IMPLIED>
+  <!ELEMENT note (#PCDATA)>
+
+ <!ELEMENT standard (font?)>
+  <!ATTLIST standard
+        bond_lenght CDATA #REQUIRED
+        bond_width  CDATA #REQUIRED
+        arrow_length CDATA #REQUIRED
+        arrow_width CDATA #REQUIRED
+        >        
+
+<!-- molecule -->
+ <!ELEMENT molecule (template?, ( atom | bond)*)>
+  <!ATTLIST molecule
+        name   CDATA #IMPLIED
+        id     ID    #IMPLIED>
+
+        <!--group  CDATA #IMPLIED-->
+
+
+  <!ELEMENT template EMPTY>
+   <!ATTLIST template
+        bond_first IDREF #IMPLIED
+        bond_second IDREF #IMPLIED 
+        atom IDREF #IMPLIED>
+
+<!-- atom -->  
+  <!ELEMENT atom ( font?, ftext, point)>
+        <!ATTLIST atom
+                show  (yes|no) "no"
+                name   CDATA    #IMPLIED
+                id     ID       #REQUIRED
+                number CDATA    #IMPLIED
+                charge CDATA    #IMPLIED
+                hydrogens (on|off)  "off"
+                pos (center-first|center-last) "center-first"
+                show_number (yes|no) "no">
+
+    <!ELEMENT point EMPTY>
+       <!ATTLIST point
+                x  CDATA  #REQUIRED
+                y  CDATA  #REQUIRED
+                z  CDATA  #IMPLIED>  
+
+  <!ELEMENT bond EMPTY>
+        <!ATTLIST bond
+                width      CDATA #IMPLIED
+                start      IDREF #REQUIRED
+                end        IDREF #REQUIRED
+                id         ID    #IMPLIED
+                type       CDATA #REQUIRED
+                distance   CDATA #IMPLIED>
+
+
+<!-- ARROW -->
+ <!-- start = "no" for no arrow, "5 6 2" - for arrow parameters, "yes" for default --> 
+  <!ELEMENT arrow (point)+>
+    <!ATTLIST arrow
+         start (yes|no) "no"
+         end   (yes|no) "no"
+         width CDATA #IMPLIED
+         shape CDATA #IMPLIED
+         spline (yes|no) "no">
+
+<!-- PLUS -->
+
+  <!ELEMENT plus (point, font?)>
+
+
+<!--  TEXT -->
+  <!ELEMENT ftext   (sub | sup | b | i )*>
+
+  <!ELEMENT sub   (sup | b | i )*>
+  <!ELEMENT sup   (sub | b | i )*>
+  <!ELEMENT b   (sub | sup | i )*>
+  <!ELEMENT i   (sub | sup | b )*>
+
+
+   <!ELEMENT font (#PCDATA)>
+        <!ATTLIST font
+                family CDATA #IMPLIED
+                size   CDATA #IMPLIED>
+

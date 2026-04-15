@@ -1,0 +1,21 @@
+  <!ELEMENT ftext   (sub | sup | b | i )*>
+        <!ATTLIST ftext
+                family CDATA #IMPLIED
+                size   CDATA #IMPLIED
+                pos    (center-first|center-last) "center-first">
+  <!ELEMENT sub   (sup | b | i )*>
+        <!ATTLIST sub
+                size CDATA #IMPLIED>
+  <!ELEMENT sup   (sub | b | i )*>
+  <!ELEMENT b   (sub | sup | i )*>
+  <!ELEMENT i   (sub | sup | b )*>
+        
+
+
+   <!ELEMENT font (#PCDATA)>
+        <!ATTLIST font
+                family CDATA #IMPLIED
+                size   CDATA #IMPLIED
+                style  CDATA #IMPLIED
+                weight CDATA #IMPLIED
+                baseline (sub|sup|normal) "normal">

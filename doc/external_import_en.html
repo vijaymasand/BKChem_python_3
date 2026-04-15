@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Creating custom templates</title>
+  </head>
+  <body>
+    <h2>How to run BKChem from outside</h2>
+
+    <p>Starting from version <b>0.9.0-pre1</b> it is possible to import bkchem from
+    a script and operate it from outside. This short article should help you getting started.</p>
+
+    <h3>Word of warning</h3>
+    <p>The possibility to run bkchem from a script adds the used a really powerful tool.
+    However, keep in mind that the API is not yet very stable, badly documented and many convenience
+    features are missing. Therefore you should be warned that it might be very
+    frustrating to write such scripts and they may even not work with further versions on BKChem.</p>
+    
+
+    <h3>Creating the simple script</h3>
+
+    <p>I will demonstrate the process in calling bkchem from outside on a simple script.
+    It will take a filename of a bkchem file from the command line, open it, recolor all
+    double bonds to red, save the result and quit. You can find the script 
+    <a href="scripts/script1.py">here</a>.</p>
+
+    <p>At the very beginning of the script we just check for the filename to process:</p>
+
+    <pre>
+import sys
+
+# at first we check the command line
+if len( sys.argv) &lt;= 1:
+  print "you have to supply a filename"
+  sys.exit()
+    </pre>
+
+    <p>The most important part comes now - it shows the general approach
+    to the problem of calling bkchem from another application:</p>
+
+    <pre>
+# then we import bkchem and threading
+from bkchem.bkchem import bkchem
+import threading
+
+# bkchem.myapp is the application instance
+app = bkchem.myapp
+
+# we need to set batch mode = 1 if we want to suppress some interactive warnings,
+# questions and mouse events
+app.in_batch_mode = 1  
+
+# now we start the application in a separate thread to be able to manipulate it
+t = threading.Thread( target=app.mainloop, name='app')
+t.setDaemon( 1)
+t.start()
+    </pre>
+
+    <p>The initial import depends on how you have installed BKChem. You can either make a symlink
+    or copy of the entire bkchem tree to the directory where this script is saved or you
+    can do a source code installation (on linux) and the package will be found by python automatically.
+    In the former case the import shown above applies, in the latter the import statement is only
+    <i>from bkchem import bkchem</i> (because only part of the directory tree is saved under
+    the python site-packages directory).</p>
+
+    <p>Because bkchem is a Tkinter application it has its own mainloop that runs all the
+    time the application exists. Therefor you have to run it in another thread in order to
+    be able to use it. Some other remarks are in the comments.</p>
+
+    <p>The code that does the actual work is pretty simple and straightforward:</p>
+
+    <pre>
+# here comes the actual code
+
+# we load the file
+app.load_CDML( sys.argv[1])
+
+# we take all molecules from the current paper, find all the double bonds,
+# change their color to red and
+for mol in app.paper.molecules:
+  for bond in mol.bonds:
+    if bond.order == 2:
+      bond.line_color = "#aa0000"
+      bond.redraw()
+
+# finally we save the result and quit
+app.save_CDML()
+app.destroy()
+    </pre>
+
+    <p>We load the file, do the transformation, save the file and quit.</p>
+
+    <h3>Last word</h3>
+
+    <p>In the directory <i>doc</i> you can find an automatically generated documentation
+    of the BKChem API. It is not yet very stable, certainly not nice and polished, however
+    its the only one I can offer at this time :).</p>
+
+    <p>In any case you can simply ask me. The only limitation is that I will not answer
+    questions in the direction "What is python and how to make it print "hello world"?".
+    Also please use the bkchem mailing list for such questions so that everybody interested
+    can benefit from the discussion.</p>
+
+  </body>
+</html>

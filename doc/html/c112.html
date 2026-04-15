@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Saving files</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="BKChem"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Users Guide"
+HREF="p20.html"><LINK
+REL="PREVIOUS"
+TITLE="Key bindings"
+HREF="x107.html"><LINK
+REL="NEXT"
+TITLE="Export formats"
+HREF="x119.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>BKChem</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x107.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x119.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="AEN112"
+></A
+>Chapter 3. Saving files</H1
+><DIV
+CLASS="sect1"
+><H1
+CLASS="sect1"
+><A
+NAME="AEN114"
+>3.1. Native formats</A
+></H1
+><P
+>Native format of BKChem is based on XML and is called CDML (chemical drawing markup
+	  language). This format is, on contrary to CML (chemical markup language) which is designed
+	  to describe the chemistry from the semantic point of view, designed to describe the
+	  chemical drawing from the perspective of representation.</P
+><P
+>CDML is however just internal format of BKChem and does not have any broad
+	  acceptance. To use the graphical output of BKChem it was necessary to export the data into
+	  some standard graphical format, preferentially SVG. This approach has however disadvantage
+	  that it forces users to maintain two versions of each document, one with data for BKChem
+	  and one with their graphical representation. Fortunately it is possible to embed foreign
+	  data into SVG and because SVG is ideal format for vector graphics I have
+	  embedded CDML into it. This way we have format (available from version 0.1.1) that
+	  can be immediately viewed in 
+	  SVG enabled programs and still has the data necessary for right interpretation by
+	  BKChem. To distinguish this new format from normal SVG I use the term CD-SVG.</P
+><P
+>This means that you can store the drawings you create in BKChem in two formats - CDML
+	  and CD-SVG. Both these formats are also available in their gzipped form (compression by
+	  gzip is almost standard way to make XML files smaller) which needs usually only 10-25% of
+	  the space needed by the unzipped form. Preferred file format is CD-SVG or if you need
+	  smaller file size its gzipped form. If you don't need the SVG representation you can also
+	  use the pure CDML. (Export to pure SVG is also available).</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x107.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x119.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Key bindings</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="p20.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Export formats</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

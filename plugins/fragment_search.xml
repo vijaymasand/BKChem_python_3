@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin>
+
+  <meta>
+    <author email="beda@zirael.org">Beda Kosata</author>
+    <description lang="en">
+      Takes a selected molecule and tries to find all files in selected directory that contain
+      a molecule containing this fragment.
+    </description>
+    <description lang="de">
+      Sucht die Dateien in einem Order, die das ausgewählte Molekül als Fragment enthalten.
+    </description>   </meta>
+
+  <source>
+    <file>fragment_search.py</file>
+    <menu-text lang="en">Find files containing fragment</menu-text>
+    <menu-text lang="cs">Najdi soubory obsahující fragment</menu-text>
+    <menu-text lang="de">Durchsuche Dateien nach Fragmenten</menu-text>
+    <menu>File</menu>
+  </source>
+</plugin>

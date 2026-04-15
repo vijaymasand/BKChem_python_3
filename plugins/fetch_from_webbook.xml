@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin>
+
+  <meta>
+    <author email="beda@zirael.org">Beda Kosata</author>
+    <description lang="en">
+      Takes a compound name and tries to find it in the NIST Webbook. When successful, tries
+      to fetch the molfile and import it.
+    </description>
+    <description lang="cs">
+      Pokusí se najít zadané jméno molekuly v NIST Webbooku. Pokud uspeje, pokusí se stáhnout odpovídající
+      molfile a importovat ho.
+    </description>
+    <description lang="de">
+      Durchsucht das NIST Webbook nach einem Molekülnamen und importiert, falls erfolgreich, die Mol Datei.
+    </description> 
+    <description lang="es">
+      Toma un nombre de compuesto y lo busca en NIST WebBook. Si lo encuentra, 
+      intenta obtener e importar el archivo en formato molfile.
+    </description>
+  </meta>
+
+  <source>
+    <file>fetch_from_webbook.py</file>
+    <menu-text lang="en">Fetch from Webbook</menu-text>
+    <menu-text lang="cs">Stáhni z Webbooku</menu-text>
+    <menu-text lang="de">Suche Struktur (NIST Webbook)</menu-text>
+    <menu-text lang="es">Obtener de WebBook</menu-text>
+  </source>
+</plugin>

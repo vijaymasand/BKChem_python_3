@@ -1,0 +1,349 @@
+
+<!DOCTYPE xsd:schema SYSTEM "/home/beda/xml/schema/schema.dtd" [
+<!ENTITY % p 'xsd:'>
+<!ENTITY % s ':xsd'>
+]>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xml:lang="en">
+
+  <xsd:element name="cdml">
+    <xsd:annotation>
+      <xsd:documentation>The root element of all BKChem CDML documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+	<xsd:element name="header" type="header"/>
+	<xsd:element name="chemistry" type="chemistry"/>
+	<xsd:element name="graphics" type="graphics"/>
+	<xsd:element name="styles" type="styles"/>
+	<xsd:element name="data" type="data"/>
+      </xsd:sequence>
+      <xsd:attribute name="version" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+
+
+  <xsd:complexType name="header">
+    <xsd:annotation>
+      <xsd:documentation>Contains document metadata</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="author" type="xsd:string"/>
+      
+      <xsd:element name="application">
+	<xsd:annotation>
+	  <xsd:documentation>Application used to create this document</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType>
+	  <xsd:simpleContent>
+	    <xsd:extension base="xsd:string">
+	      <xsd:attribute name="version" type="xsd:string"/>
+	    </xsd:extension>
+	  </xsd:simpleContent>
+	</xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="info" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="chemistry">
+    <xsd:sequence>
+      <xsd:element name="molecule" type="molecule" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="reaction" type="reaction" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="molecule">
+    <xsd:sequence>
+      <xsd:element name="name" type="rich-text" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="template">
+	<xsd:complexType>
+	  <xsd:attribute name="bond1" type="xsd:IDREF"/>
+	  <xsd:attribute name="bond2" type="xsd:IDREF"/>
+	  <xsd:attribute name="atom" type="xsd:IDREF"/>
+	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="atom" type="atom" minOccurs="1" maxOccurs="unbounded"/>
+      <xsd:element name="bond" type="bond" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="atom">
+    <xsd:sequence>
+      <xsd:element name="point" type="point"/>
+      <xsd:element name="text" type="rich-text"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID"/>
+    <xsd:attribute name="name" type="xsd:string"/>
+    <xsd:attribute name="charge">
+      <xsd:simpleType>
+	<xsd:restriction base="xsd:integer">
+	  <xsd:minInclusive value="-8"/>
+	  <xsd:maxInclusive value="8"/>
+	</xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="number" type="xsd:string"/>
+    <xsd:attribute name="style" type="xsd:IDREF"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="point">
+    <xsd:attribute name="x" type="xsd:decimal" use="required"/>
+    <xsd:attribute name="y" type="xsd:decimal" use="required"/>
+    <xsd:attribute name="z" type="xsd:decimal" use="optional"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="bond">
+    <xsd:attribute name="id" type="xsd:ID"/>
+    <xsd:attribute name="order" type="bond-order"/>
+    <xsd:attribute name="stereo" type="bond-stereo"/>
+    <xsd:attribute name="atom1" type="xsd:IDREF" use="required"/>
+    <xsd:attribute name="atom2" type="xsd:IDREF" use="required"/>
+    <xsd:attribute name="style" type="xsd:IDREF"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="reaction">
+  </xsd:complexType>
+
+
+  <xsd:complexType name="graphics">
+    <xsd:sequence>
+      <xsd:element name="stack">
+	<xsd:complexType>
+	  <xsd:attribute name="stack">
+	    <xsd:simpleType>
+	      <xsd:list itemType="xsd:IDREF"/>
+	    </xsd:simpleType>
+	  </xsd:attribute>
+	</xsd:complexType>
+      </xsd:element>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+	<xsd:element name="rect" type="rectangular-object"/>
+	<xsd:element name="square" type="rectangular-object"/>
+	<xsd:element name="oval" type="rectangular-object"/>
+	<xsd:element name="circle" type="rectangular-object"/>
+	<xsd:element name="polygon" type="polygon"/>
+	<xsd:element name="arrow" type="arrow"/>
+	<xsd:element name="plus" type="plus"/>
+	<xsd:element name="text" type="text"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="rectangular-object">
+    <xsd:sequence>
+      <xsd:element name="point" type="point" minOccurs="2" maxOccurs="2"/>
+    </xsd:sequence>
+    <xsd:attribute name="style" type="xsd:IDREF"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="polygon">
+    <xsd:sequence>
+      <xsd:element name="point" type="point" minOccurs="3" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="style" type="xsd:IDREF"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="arrow">
+    <xsd:sequence>
+      <xsd:element name="point" type="point" minOccurs="2" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="style" type="xsd:IDREF"/>
+    <xsd:attribute name="start" type="xsd:boolean"/>
+    <xsd:attribute name="end" type="xsd:boolean"/>
+    <xsd:attribute name="spline" type="xsd:boolean"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="plus">
+    <xsd:sequence>
+      <xsd:element name="point" type="point" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="style" type="xsd:IDREF"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="text">
+    <xsd:sequence>
+      <xsd:element name="point" type="point" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="text" type="rich-text"/>
+    </xsd:sequence>
+    <xsd:attribute name="style" type="xsd:IDREF"/>
+  </xsd:complexType>
+
+<!-- STYLES -->
+
+  <xsd:complexType name="styles">
+    <xsd:sequence>
+      <xsd:element name="default-style" type="style"/>
+      <xsd:element name="style" type="style" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="style">
+    <xsd:sequence>
+      <xsd:element name="fonts" type="font"/>
+      <xsd:element name="colors">
+	<xsd:complexType>
+	  <xsd:attribute name="fill-color" type="color"/>
+	  <xsd:attribute name="outline-color" type="color"/>
+	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="bonds">
+	<xsd:complexType>
+	  <xsd:attribute name="width">
+	    <xsd:simpleType>
+	      <xsd:restriction base="xsd:decimal">
+		<xsd:minInclusive value="1"/>
+		<xsd:maxInclusive value="100"/>
+	      </xsd:restriction>
+	    </xsd:simpleType>
+	  </xsd:attribute>
+	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="atoms">
+	<xsd:complexType>
+	  <xsd:attribute name="hydrogens" type="xsd:boolean"/>
+	  <xsd:attribute name="show-number" type="xsd:boolean"/>
+	  <xsd:attribute name="text-positioning">
+	    <xsd:simpleType>
+	      <xsd:restriction base="xsd:string">
+		<xsd:enumeration value="center-last"/>
+		<xsd:enumeration value="center-first"/>
+	      </xsd:restriction>
+	    </xsd:simpleType>
+	  </xsd:attribute>
+	</xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID"/>
+    <xsd:attribute name="line-width">
+      <xsd:simpleType>
+	<xsd:restriction base="xsd:decimal">
+	  <xsd:minInclusive value="0.1"/>
+	  <xsd:maxInclusive value="100"/>
+	</xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+
+
+<!-- DATA -->
+
+  <xsd:complexType name="data">
+  </xsd:complexType>
+
+
+  <!-- helper types used in the schema -->
+
+  <xsd:simpleType name="rgb-single">
+    <xsd:restriction base="xsd:nonNegativeInteger">
+      <xsd:maxInclusive value="255"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="rgb-list">
+    <xsd:list itemType="rgb-single"/>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="rgb-triade">
+    <xsd:restriction base="xsd:rgb-list">
+      <xsd:length value="3"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="rgb-hex">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="#(\d|[abcdef]){6}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="color">
+    <xsd:annotation>
+      <xsd:documentation>RGB color either in #rrggbb format or in 'r g b' format</xsd:documentation>
+    </xsd:annotation>
+    <xsd:union memberTypes="rgb-hex rgb-triade"/>
+  </xsd:simpleType>
+
+  <xsd:complexType name="rich-text" mixed="true">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="sub" type="rich-text"/>
+      <xsd:element name="sup" type="rich-text"/>
+      <xsd:element name="b" type="b"/>
+      <xsd:element name="i" type="i"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="b" mixed="true">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="sub" type="rich-text"/>
+      <xsd:element name="sup" type="rich-text"/>
+      <xsd:element name="i" type="i"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="i" mixed="true">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="sub" type="rich-text"/>
+      <xsd:element name="sup" type="rich-text"/>
+      <xsd:element name="b" type="b"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="font">
+    <xsd:attribute name="family" type="xsd:string"/>
+    <xsd:attribute name="size" type="xsd:positiveInteger"/>
+    <xsd:attribute name="weight" use="optional">
+      <xsd:simpleType>
+	<xsd:restriction base="xsd:string">
+	  <xsd:enumeration value="bold"/>
+	  <xsd:enumeration value="b"/>
+	  <xsd:enumeration value="normal"/>
+	  <xsd:enumeration value="n"/>
+	</xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="style" use="optional">
+      <xsd:simpleType>
+	<xsd:restriction base="xsd:string">
+	  <xsd:enumeration value="italic"/>
+	  <xsd:enumeration value="i"/>
+	  <xsd:enumeration value="normal"/>
+	  <xsd:enumeration value="n"/>
+	</xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:simpleType name="bond-order">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="1"/>
+      <xsd:enumeration value="2"/>
+      <xsd:enumeration value="3"/>
+      <xsd:enumeration value="s"/>
+      <xsd:enumeration value="d"/>
+      <xsd:enumeration value="t"/>
+      <xsd:enumeration value="single"/>
+      <xsd:enumeration value="double"/>
+      <xsd:enumeration value="triple"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="bond-stereo">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="n"/>
+      <xsd:enumeration value="w"/>
+      <xsd:enumeration value="h"/>
+      <xsd:enumeration value="N"/>
+      <xsd:enumeration value="W"/>
+      <xsd:enumeration value="H"/>
+      <xsd:enumeration value="normal"/>
+      <xsd:enumeration value="wedge"/>
+      <xsd:enumeration value="hatch"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+
+</xsd:schema>
