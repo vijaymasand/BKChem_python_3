@@ -1,7 +1,16 @@
 Descriptor,Description
 Atoms Count,Total number of atoms including hydrogens.
 Heavy Atoms Count,Number of non-hydrogen atoms.
-Count of [Element],Number of atoms of a specific element (e.g. C N O P S F Cl Br I).
+Count of C,Number of Carbon atoms.
+Count of H,Number of Hydrogen atoms.
+Count of N,Number of Nitrogen atoms.
+Count of O,Number of Oxygen atoms.
+Count of P,Number of Phosphorus atoms.
+Count of S,Number of Sulfur atoms.
+Count of F,Number of Fluorine atoms.
+Count of Cl,Number of Chlorine atoms.
+Count of Br,Number of Bromine atoms.
+Count of I,Number of Iodine atoms.
 Ratio C/N,Ratio of Carbon atoms to Nitrogen atoms.
 Ratio C/O,Ratio of Carbon atoms to Oxygen atoms.
 Ratio C/H,Ratio of Carbon atoms to Hydrogen atoms.
@@ -14,7 +23,6 @@ Single Bonds,Number of single bonds.
 Double Bonds,Number of double bonds.
 Triple Bonds,Number of triple bonds.
 Aromatic Bonds,Number of bonds marked as aromatic.
-Atom Pair: [X]-[Y],Number of bonds between atom types X and Y.
 Ring Count,Number of smallest independent cycles (SSSR).
 3-membered Rings,Number of 3-membered rings (triangles).
 4-membered Rings,Number of 4-membered rings (squares).
@@ -45,4 +53,18 @@ Molecular Complexity (Bertz-like),An aggregate score based on atoms bonds rings 
 Wiener Index,Sum of distances between all pairs of vertices in the molecular graph.
 Randic Index,A connectivity index based on vertex degrees.
 Balaban J Index,A distance-based topological index normalized by the cyclomatic number.
-Group: [Name],Count of specific functional groups detected by substructure search (e.g. Group: Benzene).
+Atom Pair: C-C,Number of Carbon-Carbon bonds.
+Atom Pair: C-H,Number of Carbon-Hydrogen bonds.
+Atom Pair: C-N,Number of Carbon-Nitrogen bonds.
+Atom Pair: C-O,Number of Carbon-Oxygen bonds.
+Atom Pair: C-S,Number of Carbon-Sulfur bonds.
+Group: aldehyde,Count of aldehyde groups (HC=O).
+Group: ketone,Count of ketone groups (CC(=O)C).
+Group: carboxylic acid,Count of carboxylic acid groups (HOC=O).
+Group: ester,Count of ester groups (COC=O).
+Group: amide,Count of amide groups (C(=O)N).
+Group: alcohol,Count of alcohol groups (C-OH).
+Group: ether,Count of ether groups (C-O-C).
+Group: primary amine,Count of primary amine groups (C-NH2).
+Group: nitro compound,Count of nitro groups (C-NO2).
+Group: benzene,Count of benzene rings.
