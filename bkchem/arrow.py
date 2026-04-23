@@ -679,7 +679,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 # ----- MODULE LEVEL HELPER FUNCTIONS -----
 
 def retro_arrow_head (x1,y1,x2,y2,length,width,d):
-  """arrow head at 2
+  r"""arrow head at 2
 #                    length
 #                   |---|  _
 #                  C\      |

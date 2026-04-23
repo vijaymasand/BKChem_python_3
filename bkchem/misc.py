@@ -101,7 +101,7 @@ def split_number_and_unit( txt):
     return v, ''
   except:
     pass
-  cutter = re.compile( "([+-]?\d*\.?\d*)\s*([a-zA-Z]*)")
+  cutter = re.compile( r"([+-]?\d*\.?\d*)\s*([a-zA-Z]*)")
   if txt:
     a = cutter.match( txt)
     if a and a.group(1):

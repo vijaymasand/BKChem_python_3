@@ -1284,7 +1284,7 @@ def key_from_inchi( inp):
   parts = inp.split( "/")
   if not parts:
     raise Exception( "Invalid InChI string '%s'" % inp)
-  m = re.match( "(\d)(S)?", parts[0])
+  m = re.match( r"(\d)(S)?", parts[0])
   if not m:
     raise Exception( "Invalid data in version part of InChI - '%s' in '%s'" % (parts[0], inp))
   else:

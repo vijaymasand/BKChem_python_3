@@ -92,6 +92,16 @@ class molecule( graph.graph):
 
   weight = property( get_mol_weight, None, None, "molecular weight")
 
+  def get_exact_mass( self):
+    w = 0
+    for v in self.vertices:
+      w += v.exact_mass
+      if v.free_valency > 0:
+        w += v.free_valency * PT.periodic_table['H']['exact_mass']
+    return w
+
+  exact_mass = property( get_exact_mass, None, None, "exact mass")
+
 
   def get_charge( self):
     return sum( [a.charge for a in self.vertices])

@@ -145,6 +145,23 @@ class chem_vertex( graph.vertex):
       return 0
 
   weight = property( _get_weight, None, None, "atom weight")
+  
+  # exact_mass
+  def _get_exact_mass( self):
+    try:
+      if hasattr(self, 'isotope') and self.isotope:
+        from . import isotope_database as ID
+        symbol_number = PT.periodic_table[self.symbol]['ord']
+        return ID.isotopes[symbol_number][self.isotope]['Relative Atomic Mass']
+      return PT.periodic_table[self.symbol]['exact_mass']
+    except:
+      # fallback to weight if exact_mass is not available
+      try:
+        return PT.periodic_table[self.symbol]['weight']
+      except:
+        return 0
+
+  exact_mass = property( _get_exact_mass, None, None, "atom exact mass")
 
   # free_sites
   def _set_free_sites( self, free_sites):

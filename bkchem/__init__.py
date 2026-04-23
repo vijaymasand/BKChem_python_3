@@ -15,3 +15,4 @@ except NameError:
     _ = lambda x: x
 
 
+from .descriptors import DescriptorCalculator

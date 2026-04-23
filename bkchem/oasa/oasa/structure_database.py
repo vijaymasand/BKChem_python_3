@@ -158,7 +158,7 @@ def _allow_molecule( name, smile):
     if smile.count("+]") > 2:
         # more than 2 positive charges
         return False
-    if re.search( "\[\d", smile):
+    if re.search( r"\[\d", smile):
         return False
     if smile.count(".") > 2:
         return False
