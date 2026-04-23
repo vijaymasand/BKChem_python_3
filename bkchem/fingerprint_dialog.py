@@ -11,7 +11,7 @@ from .oasa_bridge import bkchem_mol_to_oasa_mol
 
 def _calculate_fingerprint_worker(args):
     """ Worker function for multiprocessing """
-    smiles_str, name, fp_type, size, radius = args
+    smiles_str, name, fp_type, size, radius, ref_fp = args
     from .oasa import smiles as oasa_smiles
     from .fingerprints import FingerprintGenerator
     generator = FingerprintGenerator(size=size)
@@ -19,11 +19,22 @@ def _calculate_fingerprint_worker(args):
         mol = oasa_smiles.text_to_mol(smiles_str)
         if fp_type == 'Morgan':
             fp = generator.get_morgan_fingerprint(mol, radius=radius)
+        elif fp_type == 'Atom Pairs':
+            fp = generator.get_atom_pairs_fingerprint(mol)
+        elif fp_type == 'Torsions':
+            fp = generator.get_torsions_fingerprint(mol)
         else:
             fp = generator.get_path_fingerprint(mol)
         
         fp_str = generator.bitset_to_string(fp)
-        return {'Molecule Name': name, 'SMILES': smiles_str, 'Fingerprint': fp_str}
+        res = {'Molecule Name': name, 'SMILES': smiles_str, 'Fingerprint': fp_str}
+        
+        if ref_fp:
+            # ref_fp is a bitset list
+            sim = generator.calculate_tanimoto(fp, ref_fp)
+            res['Similarity'] = f"{sim:.4f}"
+            
+        return res
     except Exception as e:
         return None
 
@@ -69,7 +80,7 @@ class FingerprintDialog:
         # Fingerprint Type
         self.fp_type = tk.StringVar(value='Morgan')
         tk.Label(s_interior, text="Type:").grid(row=0, column=0, sticky='w', padx=5)
-        tk.OptionMenu(s_interior, self.fp_type, 'Morgan', 'Path').grid(row=0, column=1, sticky='w', padx=5)
+        tk.OptionMenu(s_interior, self.fp_type, 'Morgan', 'Path', 'Atom Pairs', 'Torsions').grid(row=0, column=1, sticky='w', padx=5)
         
         # Size
         self.fp_size = tk.IntVar(value=1024)
@@ -80,10 +91,15 @@ class FingerprintDialog:
         self.fp_radius = tk.IntVar(value=2)
         tk.Label(s_interior, text="Radius (Morgan):").grid(row=2, column=0, sticky='w', padx=5)
         tk.Spinbox(s_interior, from_=1, to=5, textvariable=self.fp_radius, width=5).grid(row=2, column=1, sticky='w', padx=5)
+
+        # Reference SMILES for Similarity
+        self.ref_smiles = tk.StringVar()
+        tk.Label(s_interior, text="Ref. SMILES (Optional):").grid(row=3, column=0, sticky='w', padx=5)
+        tk.Entry(s_interior, textvariable=self.ref_smiles, width=30).grid(row=3, column=1, sticky='w', padx=5)
         
         # Multiprocessing Settings
         mp_frame = tk.Frame(s_interior)
-        mp_frame.grid(row=3, column=0, columnspan=2, sticky='w', pady=5)
+        mp_frame.grid(row=4, column=0, columnspan=2, sticky='w', pady=5)
         tk.Label(mp_frame, text="Processors:").pack(side='left', padx=5)
         max_cpus = multiprocessing.cpu_count()
         self.cpu_count = tk.IntVar(value=max(1, max_cpus // 2))
@@ -123,6 +139,23 @@ class FingerprintDialog:
             self.status.config(text="Processing...")
             self.dialog.update()
             
+            ref_fp = None
+            if self.ref_smiles.get().strip():
+                try:
+                    ref_mol = smiles.text_to_mol(self.ref_smiles.get().strip())
+                    gen = FingerprintGenerator(size=self.fp_size.get())
+                    if self.fp_type.get() == 'Morgan':
+                        ref_fp = gen.get_morgan_fingerprint(ref_mol, radius=self.fp_radius.get())
+                    elif self.fp_type.get() == 'Atom Pairs':
+                        ref_fp = gen.get_atom_pairs_fingerprint(ref_mol)
+                    elif self.fp_type.get() == 'Torsions':
+                        ref_fp = gen.get_torsions_fingerprint(ref_mol)
+                    else:
+                        ref_fp = gen.get_path_fingerprint(ref_mol)
+                except Exception as e:
+                    tkMessageBox.showwarning("Warning", f"Invalid reference SMILES: {e}")
+                    return
+
             is_csv = input_path.lower().endswith('.csv')
             with open(input_path, 'r', newline='') as f:
                 if is_csv:
@@ -145,7 +178,7 @@ class FingerprintDialog:
                     smiles_str, name = row[0], row[1]
                 else:
                     smiles_str, name = row[0], f"Mol_{i+1}"
-                tasks.append((smiles_str, name, self.fp_type.get(), self.fp_size.get(), self.fp_radius.get()))
+                tasks.append((smiles_str, name, self.fp_type.get(), self.fp_size.get(), self.fp_radius.get(), ref_fp))
 
             num_procs = self.cpu_count.get()
             self.status.config(text=f"Calculating with {num_procs} cores...")
@@ -160,7 +193,10 @@ class FingerprintDialog:
                 return
 
             with open(output_path, 'w', newline='') as f:
-                writer = csv.DictWriter(f, fieldnames=['Molecule Name', 'SMILES', 'Fingerprint'])
+                fields = ['Molecule Name', 'SMILES', 'Fingerprint']
+                if ref_fp:
+                    fields.append('Similarity')
+                writer = csv.DictWriter(f, fieldnames=fields)
                 writer.writeheader()
                 writer.writerows(all_results)
                 
@@ -173,9 +209,11 @@ class FingerprintDialog:
 
     def process_selected(self):
         try:
-            # This is simplified, in real main.py we'd get selected objects
-            paper = self.parent.get_active_paper()
-            selected = paper.get_selected_molecules()
+            from .singleton_store import Store
+            paper = Store.app.paper
+            # Get selected molecules using the established pattern
+            selected = [m for m in paper.selected_to_unique_top_levels()[0] if m.object_type == 'molecule']
+            
             if not selected:
                 tkMessageBox.showwarning("Warning", "No molecules selected on canvas.")
                 return
@@ -183,24 +221,36 @@ class FingerprintDialog:
             gen = FingerprintGenerator(size=self.fp_size.get())
             res_text = ""
             for mol_obj in selected:
+                name = mol_obj.name if mol_obj.name else f"Molecule {mol_obj.id}"
                 oasa_mol = bkchem_mol_to_oasa_mol(mol_obj)
                 if self.fp_type.get() == 'Morgan':
                     fp = gen.get_morgan_fingerprint(oasa_mol, radius=self.fp_radius.get())
+                elif self.fp_type.get() == 'Atom Pairs':
+                    fp = gen.get_atom_pairs_fingerprint(oasa_mol)
+                elif self.fp_type.get() == 'Torsions':
+                    fp = gen.get_torsions_fingerprint(oasa_mol)
                 else:
                     fp = gen.get_path_fingerprint(oasa_mol)
                 
                 fp_str = gen.bitset_to_string(fp)
-                res_text += f"Mol: {mol_obj.id}\nFingerprint: {fp_str[:64]}...\n\n"
+                res_text += f"--- {name} ---\nFingerprint ({self.fp_type.get()}):\n{fp_str}\n\n"
             
-            # Show in a simple dialog
-            top = tk.Toplevel(self.parent)
-            top.title("Calculated Fingerprints")
-            txt = tk.Text(top, height=10, width=80)
-            txt.insert('1.0', res_text)
-            txt.pack(padx=10, pady=10)
+            # Show in a professional Pmw TextDialog
+            res_dialog = Pmw.TextDialog(self.parent,
+                                        title = 'Fingerprint Results',
+                                        buttons = ('Close',),
+                                        defaultbutton = 'Close',
+                                        scrolledtext_labelpos = 'n',
+                                        label_text = f'Calculated {self.fp_type.get()} Fingerprints')
+            
+            res_dialog.insert('end', res_text)
+            res_dialog.activate()
             
         except Exception as e:
             tkMessageBox.showerror("Error", f"Could not process selection: {str(e)}")
 
+    def activate(self):
+        self.dialog.activate()
+
     def close(self, result=None):
-        self.dialog.destroy()
+        self.dialog.deactivate()
