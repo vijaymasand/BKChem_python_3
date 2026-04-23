@@ -1,0 +1,48 @@
+Descriptor,Description
+Atoms Count,Total number of atoms including hydrogens.
+Heavy Atoms Count,Number of non-hydrogen atoms.
+Count of [Element],Number of atoms of a specific element (e.g. C N O P S F Cl Br I).
+Ratio C/N,Ratio of Carbon atoms to Nitrogen atoms.
+Ratio C/O,Ratio of Carbon atoms to Oxygen atoms.
+Ratio C/H,Ratio of Carbon atoms to Hydrogen atoms.
+Ratio C/S,Ratio of Carbon atoms to Sulfur atoms.
+Ratio C/Halogens,Ratio of Carbon atoms to Halogen atoms (F Cl Br I).
+Molecular Weight,Average molecular mass based on standard atomic weights.
+Exact Mass,Monoisotopic mass based on the most abundant isotopes.
+Bonds Count,Total number of bonds in the molecule.
+Single Bonds,Number of single bonds.
+Double Bonds,Number of double bonds.
+Triple Bonds,Number of triple bonds.
+Aromatic Bonds,Number of bonds marked as aromatic.
+Atom Pair: [X]-[Y],Number of bonds between atom types X and Y.
+Ring Count,Number of smallest independent cycles (SSSR).
+3-membered Rings,Number of 3-membered rings (triangles).
+4-membered Rings,Number of 4-membered rings (squares).
+5-membered Rings,Number of 5-membered rings (pentagons).
+6-membered Rings,Number of 6-membered rings (hexagons).
+7-membered Rings,Number of 7-membered rings (heptagons).
+8-membered Rings,Number of 8-membered rings (octagons).
+Ring Atoms Count,Number of atoms that are part of at least one ring.
+Non-Ring Atoms Count,Number of atoms that are not part of any ring.
+Ratio Ring/Non-Ring Atoms,Ratio of ring atoms to non-ring atoms.
+Ring Carbon Count,Number of Carbon atoms in rings.
+Ring Nitrogen Count,Number of Nitrogen atoms in rings.
+Ring Oxygen Count,Number of Oxygen atoms in rings.
+Ratio Ring C / Total C,Fraction of total Carbons that are in rings.
+Ratio Ring C / Ring N,Ratio of ring Carbons to ring Nitrogens.
+Ratio Ring C / Ring O,Ratio of ring Carbons to ring Oxygens.
+Heteroatom Count,Number of non-carbon non-hydrogen atoms.
+Ratio Heteroatoms / Total Atoms,Fraction of total atoms that are heteroatoms.
+Aromatic Atoms Count,Number of atoms participating in aromatic bonds.
+Ratio Aromatic Atoms / Total Atoms,Fraction of total atoms that are aromatic.
+Rotatable Bond Count,Number of freely rotating single bonds between non-terminal heavy atoms (not in rings).
+H-Bond Donors,Number of OH and NH groups.
+H-Bond Acceptors,Number of O and N atoms.
+Fsp3,Fraction of sp3-hybridized carbons relative to total carbons.
+Aromatic Ring Count,Number of fully aromatic rings.
+Lipinski RO5 Violations (Partial),Number of Lipinski Rule of 5 violations (MW > 500 H-donors > 5 H-acceptors > 10).
+Molecular Complexity (Bertz-like),An aggregate score based on atoms bonds rings and diversity of elements.
+Wiener Index,Sum of distances between all pairs of vertices in the molecular graph.
+Randic Index,A connectivity index based on vertex degrees.
+Balaban J Index,A distance-based topological index normalized by the cyclomatic number.
+Group: [Name],Count of specific functional groups detected by substructure search (e.g. Group: Benzene).
