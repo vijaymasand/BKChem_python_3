@@ -16,3 +16,4 @@ except NameError:
 
 
 from .descriptors import DescriptorCalculator
+from .fingerprints import FingerprintGenerator

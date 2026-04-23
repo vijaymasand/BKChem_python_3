@@ -69,6 +69,7 @@ from .singleton_store import Store, Screen
 from . import oasa
 from . import molecule
 from .descriptor_dialog import DescriptorDialog
+from .fingerprint_dialog import FingerprintDialog
 
 
 
@@ -255,6 +256,7 @@ class BKChem( Tk):
       ( _("Chemistry"), 'command', _('Info'), '(C-o C-i)', _("Display summary formula and other info on all selected molecules"), lambda : self.paper.display_info_on_selected(), 'selected_mols'),
       ( _("Chemistry"), 'command', _('Check chemistry'), '(C-o C-c)', _("Check if the selected objects have chemical meaning"), lambda : self.paper.check_chemistry_of_selected(), 'selected_mols'),
       ( _("Chemistry"), 'command', _('Molecular Descriptors'), None, _("Calculate molecular descriptors for batch or selected molecules"), self.show_descriptors_dialog, None),
+      ( _("Chemistry"), 'command', _('Calculate Fingerprints'), None, _("Calculate molecular fingerprints for batch or selected molecules"), self.show_fingerprints_dialog, None),
       ( _("Chemistry"), 'command', _('Expand groups'), '(C-o C-e)', _("Expand all selected groups to their structures"), lambda : self.paper.expand_groups(), 'groups_selected'),
       ( _("Chemistry"), 'separator'),
       ( _("Chemistry"), 'command', _('Compute oxidation number'), None, _("Compute and display the oxidation number of selected atoms"), lambda : interactors.compute_oxidation_number( self.paper), 'selected_atoms'),      
@@ -605,6 +607,10 @@ class BKChem( Tk):
 
   def show_descriptors_dialog( self):
     DescriptorDialog( self).activate()
+
+
+  def show_fingerprints_dialog( self):
+    FingerprintDialog( self).activate()
 
 
 
