@@ -318,7 +318,7 @@ class config_dialog:
     # PLUS
 
     # FONT
-    font_items = filter( lambda x: hasattr( x, 'font_family'), items)
+    font_items = list( filter( lambda x: hasattr( x, 'font_family'), items))
     if font_items:
       self.font_page = self.pages.add(_('Font'))
 
@@ -341,7 +341,7 @@ class config_dialog:
 
     # COMMON
     self.common_page = self.pages.add(_('Common'))
-    line_items = filter( lambda x: hasattr( x, 'line_width'), items)
+    line_items = list( filter( lambda x: hasattr( x, 'line_width'), items))
     if line_items:
       widths = misc.filter_unique( [o.line_width for o in line_items])
       if len( widths) == 1:
@@ -353,7 +353,7 @@ class config_dialog:
       self.line_width = widgets.WidthChooser( self.common_page, width, label=_('Line width'))
       self.line_width.pack( anchor='nw', padx=10, pady=5)
 
-    line_color_items = filter( lambda x: hasattr( x, 'line_color'), items)
+    line_color_items = list( filter( lambda x: hasattr( x, 'line_color'), items))
     if line_color_items:
       lines = misc.filter_unique( [o.line_color for o in line_color_items])
       if len( lines) == 1:
@@ -363,7 +363,7 @@ class config_dialog:
       self.line_color = widgets.ColorButtonWithTransparencyChecker( self.common_page, color=line, text=_("Line color"))
       self.line_color.pack( anchor='nw', padx=10, pady=10)
 
-    area_color_items = filter( lambda x: hasattr( x, 'area_color'), items)
+    area_color_items = list( filter( lambda x: hasattr( x, 'area_color'), items))
     if area_color_items:
       areas = misc.filter_unique( [o.area_color for o in area_color_items])
       if len( areas) == 1:
@@ -713,8 +713,7 @@ class standard_values_dialog:
       t = _('Custom')
     else:
       t = self.paper._paper_properties['type']
-    paper_types = data.paper_types.keys()
-    paper_types.sort()
+    paper_types = sorted( data.paper_types.keys())
     self.paper_type_chooser = Pmw.OptionMenu( paper_group,
                                               items=paper_types, #+[_('Custom')],
                                               initialitem = t,
@@ -976,7 +975,7 @@ class fragment_dialog( Pmw.Dialog):
 
 
   def clean( self):
-    map( self.paper.delete, self._items)
+    [self.paper.delete( i) for i in self._items]
     self._items = set()
 
 

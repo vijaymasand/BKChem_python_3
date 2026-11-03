@@ -8,6 +8,7 @@ import os
 from .descriptors import DescriptorCalculator
 from .oasa import smiles
 from .oasa_bridge import bkchem_mol_to_oasa_mol
+from .singleton_store import Store
 import multiprocessing
 
 def _calculate_smiles_worker(args):
@@ -87,15 +88,19 @@ class DescriptorDialog:
 
     def browse_input(self):
         filename = filedialog.askopenfilename(title="Select SMILES or CSV file",
+                                              initialdir=Store.app.save_dir,
                                               filetypes=(("SMILES/CSV files", "*.smi *.smiles *.csv"), ("CSV files", "*.csv"), ("SMILES files", "*.smi *.smiles"), ("Text files", "*.txt"), ("All files", "*.*")))
         if filename:
+            Store.app.save_dir = os.path.dirname(filename) or Store.app.save_dir
             self.input_file.set(filename)
 
     def browse_output(self):
         filename = filedialog.asksaveasfilename(title="Save CSV file",
+                                                initialdir=Store.app.save_dir,
                                                 defaultextension=".csv",
                                                 filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
         if filename:
+            Store.app.save_dir = os.path.dirname(filename) or Store.app.save_dir
             self.output_file.set(filename)
 
     def close(self, button):
@@ -206,10 +211,12 @@ class DescriptorDialog:
             return
             
         output_path = filedialog.asksaveasfilename(title="Save CSV file",
+                                                initialdir=Store.app.save_dir,
                                                 defaultextension=".csv",
                                                 filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
         if not output_path:
             return
+        Store.app.save_dir = os.path.dirname(output_path) or Store.app.save_dir
             
         try:
             all_results = []

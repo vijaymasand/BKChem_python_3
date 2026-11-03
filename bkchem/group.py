@@ -87,11 +87,15 @@ class group( drawable_chem_vertex):
     return self._symbol
 
   def _set_symbol( self, symbol):
-    try:
-      t = str(symbol)
-    except UnicodeDecodeError:
+    # in Python 3 the symbol must stay a str - storing it encoded as
+    # bytes (a Python 2 leftover) breaks everything that uses it as
+    # text later on (re.sub in _get_xml_ftext, groups_table lookups,
+    # XML attributes, ...)
+    if isinstance( symbol, bytes):
       t = symbol.decode( 'utf-8')
-    self._symbol = t.encode('utf-8')
+    else:
+      t = str( symbol)
+    self._symbol = t
     self.dirty = 1
 
   symbol = property( _get_symbol, _set_symbol)
@@ -182,12 +186,22 @@ class group( drawable_chem_vertex):
       self.symbol = GT.groups_table[ name.lower()]['name']
       self.group_type = "builtin"
       return True
-    # try interpret the formula
-    lf = oasa.linear_formula.linear_formula( name, start_valency=occupied_valency)
-    if not lf.molecule:
-      # it is possible the text goes the other way
-      lf = oasa.linear_formula.linear_formula( name, end_valency=occupied_valency)
-    if lf.molecule:
+    # try interpret the formula - but only when the atom this group
+    # should replace has at most one bond.  A group attaches through a
+    # single bond of its connecting atom (the builtin and chain groups
+    # below are likewise restricted to occupied_valency == 1), and
+    # oasa's linear_formula parser cannot be trusted with a higher
+    # start/end valency: instead of failing it silently adapts the
+    # internal bond orders of the formula - e.g. "COOH" with a start
+    # valency of 3 "parses", but the carbonyl carbon ends up with only
+    # one internal bond, so the result is no longer COOH at all.
+    lf = None
+    if occupied_valency <= 1:
+      lf = oasa.linear_formula.linear_formula( name, start_valency=occupied_valency)
+      if not lf.molecule:
+        # it is possible the text goes the other way
+        lf = oasa.linear_formula.linear_formula( name, end_valency=occupied_valency)
+    if lf and lf.molecule:
       self.group_graph = lf.molecule
       if lf.first_atom:
         self.connecting_atom = lf.first_atom

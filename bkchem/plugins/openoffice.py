@@ -274,7 +274,7 @@ note that this is not an ODF (Open Document Format) export."""
 
       for i in items:
 
-        coords = map( Screen.px_to_cm, self.paper.coords( i))
+        coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
 
         self.create_oo_line( coords, page, style_name)
 
@@ -282,7 +282,7 @@ note that this is not an ODF (Open Document Format) export."""
 
       for i in items:
 
-        x, y, x2, y2 = map( Screen.px_to_cm, self.paper.coords( i))
+        x, y, x2, y2 = list( map( Screen.px_to_cm, self.paper.coords( i)))
 
         size = Screen.px_to_cm( x2-x)
 
@@ -310,7 +310,7 @@ note that this is not an ODF (Open Document Format) export."""
 
       for i in items:
 
-        coords = map( Screen.px_to_cm, self.paper.coords( i))
+        coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
 
         self.create_oo_line( coords, page, b_style_name)
 
@@ -326,7 +326,7 @@ note that this is not an ODF (Open Document Format) export."""
 
       for i in items:
 
-        coords = map( Screen.px_to_cm, self.paper.coords( i))
+        coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
 
         point_array = []
 
@@ -360,7 +360,7 @@ note that this is not an ODF (Open Document Format) export."""
 
     for i in line_items:
 
-      coords = map( Screen.px_to_cm, self.paper.coords( i))
+      coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
 
       self.create_oo_line( coords, page, style_name)
 
@@ -376,7 +376,7 @@ note that this is not an ODF (Open Document Format) export."""
 
     if a.show:
 
-      coords = map( Screen.px_to_cm, self.paper.coords( a.selector))
+      coords = list( map( Screen.px_to_cm, self.paper.coords( a.selector)))
 
       # we need to use negative padding of the text because oo puts too much space above
 
@@ -456,7 +456,7 @@ note that this is not an ODF (Open Document Format) export."""
 
 ##       style_name = self.get_appropriate_style_name( s)
 
-##       x, y, x2, y2 = map( Screen.px_to_cm, o.coords)
+##       x, y, x2, y2 = list( map( Screen.px_to_cm, o.coords))
 
 ##       dom_extensions.elementUnder( page, 'draw:rect',
 
@@ -498,7 +498,7 @@ note that this is not an ODF (Open Document Format) export."""
 
 
 
-    coords = map( Screen.px_to_cm, self.paper.coords( a.selector))
+    coords = list( map( Screen.px_to_cm, self.paper.coords( a.selector)))
 
     self.create_oo_text( '<ftext>%s</ftext>' % a.xml_ftext, coords, page, para_style_name, txt_style_name, gr_style_name)
 
@@ -526,7 +526,7 @@ note that this is not an ODF (Open Document Format) export."""
 
 
 
-    coords = map( Screen.px_to_cm, self.paper.coords( a.selector))
+    coords = list( map( Screen.px_to_cm, self.paper.coords( a.selector)))
 
     self.create_oo_text( '<ftext>+</ftext>', coords, page, para_style_name, txt_style_name, gr_style_name)
 
@@ -560,7 +560,7 @@ note that this is not an ODF (Open Document Format) export."""
 
         ps = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
 
-        points = [map( Screen.px_to_cm, p) for p in ps]
+        points = [list( map( Screen.px_to_cm, p)) for p in ps]
 
         self.create_oo_polygon( points, page, style_name)
 
@@ -596,7 +596,7 @@ note that this is not an ODF (Open Document Format) export."""
 
         ps = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
 
-        points = [map( Screen.px_to_cm, p) for p in ps]
+        points = [list( map( Screen.px_to_cm, p)) for p in ps]
 
         if self.paper.itemcget( item, "smooth") == "0":
 
@@ -622,7 +622,7 @@ note that this is not an ODF (Open Document Format) export."""
 
     style_name = self.get_appropriate_style_name( s)
 
-    points = [map( Screen.px_to_cm, p.get_xy()) for p in o.points]
+    points = [list( map( Screen.px_to_cm, p.get_xy())) for p in o.points]
 
     self.create_oo_polygon( points, page, style_name)
 
@@ -640,7 +640,7 @@ note that this is not an ODF (Open Document Format) export."""
 
     style_name = self.get_appropriate_style_name( s)
 
-    x, y, x2, y2 = map( Screen.px_to_cm, o.coords)
+    x, y, x2, y2 = list( map( Screen.px_to_cm, o.coords))
 
     dom_extensions.elementUnder( page, 'draw:rect',
 
@@ -668,7 +668,7 @@ note that this is not an ODF (Open Document Format) export."""
 
     style_name = self.get_appropriate_style_name( s)
 
-    x, y, x2, y2 = map( Screen.px_to_cm, o.coords)
+    x, y, x2, y2 = list( map( Screen.px_to_cm, o.coords))
 
     dom_extensions.elementUnder( page, 'draw:ellipse',
 
@@ -698,7 +698,7 @@ note that this is not an ODF (Open Document Format) export."""
 
     for i in o.items:
 
-      x, y, x2, y2 = map( Screen.px_to_cm, self.paper.coords( i))
+      x, y, x2, y2 = list( map( Screen.px_to_cm, self.paper.coords( i)))
 
       size = Screen.px_to_cm( o.size)
 
@@ -730,7 +730,7 @@ note that this is not an ODF (Open Document Format) export."""
 
     style_name = self.get_appropriate_style_name( s)
 
-    coords = map( Screen.px_to_cm, self.paper.coords( i))
+    coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
 
     self.create_oo_line( coords, page, style_name)
 
@@ -754,7 +754,7 @@ note that this is not an ODF (Open Document Format) export."""
 
       if self.paper.type( i) == "oval":
 
-        x, y, x2, y2 = map( Screen.px_to_cm, self.paper.coords( i))
+        x, y, x2, y2 = list( map( Screen.px_to_cm, self.paper.coords( i)))
 
         size = Screen.px_to_cm( o.size)
 
@@ -796,7 +796,7 @@ note that this is not an ODF (Open Document Format) export."""
 
         # end of hack
 
-        coords = map( Screen.px_to_cm, coords)
+        coords = list( map( Screen.px_to_cm, coords))
 
         self.create_oo_line( coords, page, style_name)
 
@@ -830,7 +830,7 @@ note that this is not an ODF (Open Document Format) export."""
 
       else:
 
-        points.append( map( Screen.px_to_cm, (x, c)))
+        points.append( list( map( Screen.px_to_cm, (x, c))))
 
         i = 0
 
@@ -860,7 +860,7 @@ note that this is not an ODF (Open Document Format) export."""
 
 
 
-    coords = map( Screen.px_to_cm, self.paper.bbox( a.items[0]))
+    coords = list( map( Screen.px_to_cm, self.paper.bbox( a.items[0])))
 
     self.create_oo_text( '<ftext>%s</ftext>' % a.text, coords, page, para_style_name, txt_style_name, gr_style_name)
 

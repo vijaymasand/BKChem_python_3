@@ -35,6 +35,11 @@ from .singleton_store import Store
 from .atom import atom
 import operator
 from functools import reduce
+import gettext
+# same fallback as in validator.py: ngettext is not guaranteed to exist
+# as a builtin (it is installed only when a translation file is found),
+# but save_as_template() uses it whenever the template summary is shown
+ngettext = gettext.ngettext
 
 
 def ask_name_for_selected( paper):

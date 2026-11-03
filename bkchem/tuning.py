@@ -44,7 +44,7 @@ class Tuning:
             if font_size in d:
                 return d[font_size]
             # it isn't
-            keys = d.keys()
+            keys = list( d.keys())
             diffs = [abs(k-font_size) for k in keys]
             best_i = diffs.index( min( diffs))
             best_key = keys[best_i]

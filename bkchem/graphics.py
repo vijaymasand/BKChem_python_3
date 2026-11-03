@@ -161,8 +161,8 @@ class rect( vector_graphics_item, area_colored):
                            
   def read_package( self, pack):
     """reads the dom element pack and sets internal state according to it"""
-    self.coords = self.paper.real_to_screen_coords( map( Screen.any_to_px,
-                                                         dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
+    self.coords = self.paper.real_to_screen_coords( list( map( Screen.any_to_px,
+                                                         dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2']))))
     for attr in ("area_color", "line_color"):
       if pack.getAttributeNode( attr):
         setattr( self, attr, pack.getAttribute( attr))
@@ -254,8 +254,8 @@ class oval( vector_graphics_item):
                            
   def read_package( self, pack):
     """reads the dom element pack and sets internal state according to it"""
-    self.coords = self.paper.real_to_screen_coords( map( Screen.any_to_px,
-                                                         dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
+    self.coords = self.paper.real_to_screen_coords( list( map( Screen.any_to_px,
+                                                         dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2']))))
 
     for attr in ("area_color", "line_color"):
       if pack.getAttributeNode( attr):

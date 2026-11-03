@@ -19,8 +19,32 @@
 
 import xml.dom.minidom as dom
 from . import dom_extensions
-import types
 import os, sys
+
+
+# Python 3 type names (as written by write_to_dom, i.e. type(value).__name__)
+# mapped to the callable used to restore the value, plus the Python 2 names
+# (StringType etc., from the types module) that old prefs.xml files may use.
+# types.__dict__ no longer contains str/int/... in Python 3, so looking the
+# names up there -- as the original code did -- raises KeyError on read and
+# never matches on write.
+_TYPE_CONVERTERS = {
+  'str': str, 'StringType': str, 'unicode': str, 'UnicodeType': str,
+  'int': int, 'IntType': int, 'long': int, 'LongType': int,
+  'float': float, 'FloatType': float,
+  'bool': bool, 'BooleanType': bool,
+}
+
+# Types stored as their repr() and restored with eval().
+_CONTAINER_TYPES = ("list", "tuple", "dict",
+                    "ListType", "TupleType", "DictType")
+
+
+def _convert_value( converter, text):
+  # bool("False") is True, so bool needs an explicit parse.
+  if converter is bool:
+    return text.strip().lower() in ("1", "true", "yes")
+  return converter( text)
 
 
 
@@ -71,19 +95,27 @@ class pref_manager( object):
 
 
   def read_from_dom( self, doc):
-    top = doc.getElementsByTagName( "bkchem-prefs")[0]
+    tops = doc.getElementsByTagName( "bkchem-prefs")
+    if not tops:
+      return
+    top = tops[0]
     for child in dom_extensions.childNodesWithoutEmptySpaces( top):
       name = child.nodeName
-      itype = child.getAttribute( 'type') or str
-      if itype in ("ListType", "TupleType", "DictType"):
-        value = eval( dom_extensions.getAllTextFromElement( child))
-      else:
-        itype = types.__dict__[ itype]
-        try:
-          value = itype( dom_extensions.getAllTextFromElement( child))
-        except:
-          print("Preference manager: ignoring value %s of type %s" % (dom_extensions.getAllTextFromElement( child), itype), file=sys.stderr)
-          break
+      text = dom_extensions.getAllTextFromElement( child)
+      # A missing type attribute means a plain string. Unknown type names
+      # also fall back to str instead of raising KeyError and losing
+      # every preference in the file.
+      itype = child.getAttribute( 'type') or 'str'
+      try:
+        if itype in _CONTAINER_TYPES:
+          value = eval( text)
+        else:
+          value = _convert_value( _TYPE_CONVERTERS.get( itype, str), text)
+      except:
+        print("Preference manager: ignoring value %s of type %s" % (text, itype), file=sys.stderr)
+        # Skip only this value; the original 'break' discarded all
+        # preferences stored after a single bad one.
+        continue
       self.add_preference( name, value)
 
 
@@ -97,21 +129,24 @@ class pref_manager( object):
     doc.appendChild( top)
 
     for k, v in self.data.items():
-      itype = 'str'
-      for tn in types.__dict__:
-        if type( v) == types.__dict__[ tn]:
-          itype = tn
-          break
-      if itype == "str":
-        v = v.decode('utf-8')
-        itype = 'str'
-      el = dom_extensions.textOnlyElementUnder( top, k, str(v),
+      # Python 3: the type name is simply type(v).__name__ ('str', 'int',
+      # 'bool', ...). str has no .decode() in Python 3 -- calling it was
+      # what made every save fail with AttributeError.
+      itype = type( v).__name__
+      text = repr( v) if isinstance( v, (list, tuple, dict)) else str( v)
+      el = dom_extensions.textOnlyElementUnder( top, k, text,
                                                 attributes = (("type", itype),))
     return doc
 
 
   def write_to_file( self, f):
     try:
-      f.write( self.write_to_dom().toxml().encode('utf-8'))
+      data = self.write_to_dom().toxml().encode('utf-8')
+      try:
+        f.write( data)
+      except TypeError:
+        # Caller opened the file in text mode (save_configuration() uses
+        # get_opened_config_file(..., mode="w")): write str, not bytes.
+        f.write( data.decode('utf-8'))
     except:
       print("failed to write to the personal preference file")

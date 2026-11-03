@@ -4,6 +4,7 @@ import tkinter.messagebox as tkMessageBox
 import Pmw
 import csv
 import os
+from .singleton_store import Store
 import multiprocessing
 from .fingerprints import FingerprintGenerator
 from .oasa import smiles
@@ -118,13 +119,15 @@ class FingerprintDialog:
         self.status.pack(fill='x', side='bottom')
 
     def browse_input(self):
-        filename = filedialog.askopenfilename(filetypes=[("Chemical files", "*.smi *.csv"), ("All files", "*.*")])
+        filename = filedialog.askopenfilename(initialdir=Store.app.save_dir, filetypes=[("Chemical files", "*.smi *.csv"), ("All files", "*.*")])
         if filename:
+            Store.app.save_dir = os.path.dirname(filename) or Store.app.save_dir
             self.input_file.set(filename)
 
     def browse_output(self):
-        filename = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+        filename = filedialog.asksaveasfilename(initialdir=Store.app.save_dir, defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
         if filename:
+            Store.app.save_dir = os.path.dirname(filename) or Store.app.save_dir
             self.output_file.set(filename)
 
     def process_batch(self):

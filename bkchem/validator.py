@@ -24,6 +24,12 @@
 """provides validator class that checks chemistry"""
 
 import types
+import gettext
+# bkchem's i18n setup installs ngettext as a builtin only when a
+# translation file is found; in the English fallback it is missing and
+# get_summary() would raise NameError whenever it has anything to
+# report, so provide it from the gettext module (as paper.py does)
+ngettext = gettext.ngettext
 from .atom import atom
 from .group import group
 from .textatom import textatom
@@ -67,8 +73,8 @@ class validator:
 
 
   def validate_molecule( self, mol):
-    map( self.validate_atom, mol.atoms)
-    map( self.validate_bond, mol.bonds)
+    [self.validate_atom( a) for a in mol.atoms]
+    [self.validate_bond( b) for b in mol.bonds]
 
   def validate_list( self, objs):
     [self.validate_object( o) for o in objs]

@@ -504,7 +504,7 @@ class text_mark( mark):
     dx = font.measure( self.text) / 2
     y += font.metrics('descent')
 
-    text = dom_extensions.textOnlyElementUnder( e, 'text', unicode( self.text),
+    text = dom_extensions.textOnlyElementUnder( e, 'text', str( self.text),
                                                 (('font-size', "%dpt" % self.size),
                                                  ('font-family', self.atom.font_family),
                                                  ( "x", str( x - dx)),

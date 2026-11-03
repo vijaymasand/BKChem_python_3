@@ -170,6 +170,17 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
 
 
   def set_name( self, name, interpret=1, occupied_valency=None):
+    # A plain element symbol (optionally carrying a charge) denotes a
+    # real atom, not a query atom. It only reaches this fallback when
+    # the atom interpretation has already refused it - e.g. because its
+    # valency does not fit the bonds of the atom it would replace - so
+    # accepting it here would recreate the same impossible atom under a
+    # different object type (oasa itself warns about such symbols).
+    match = re.match( "^([a-z]+)([0-9]*)([+-]?)$", name.lower())
+    if match:
+      symbol = match.group(1).capitalize()
+      if symbol in PT.periodic_table and 'query' not in PT.periodic_table[ symbol]:
+        return False
     try:
       self.symbol = name
     except oasa.oasa_exceptions.oasa_invalid_atom_symbol:
