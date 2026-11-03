@@ -257,6 +257,19 @@ class atom( drawable_chem_vertex, oasa.atom):
     elch = self.split_element_and_charge( name)
     if elch:
       # name is element symbol + charge
+      if check_valency:
+        # refuse a symbol whose valency cannot accommodate the bonds
+        # already attached to this atom (or about to be moved onto it,
+        # passed as occupied_valency); without this check the change
+        # silently went through and the atom's valency was raised to an
+        # impossible value instead (e.g. an oxygen with 3 bonds, or a
+        # hydrogen inside a ring)
+        if occupied_valency == None:
+          occ = self.occupied_valency
+        else:
+          occ = occupied_valency
+        if not _valency_can_accommodate( elch[0], occ, self.charge + elch[1]):
+          return False
       self.symbol = elch[0]
       #self.show_hydrogens = 0
       self.charge += elch[1]
@@ -600,3 +613,26 @@ class atom( drawable_chem_vertex, oasa.atom):
   def after_undo( self):
     """this is run after undo"""
     self._clean_cache()
+
+
+def _valency_can_accommodate( symbol, occupied, charge):
+  """True if some valency listed for symbol in the periodic table can
+  accommodate `occupied` (the sum of bond orders attached to the atom),
+  applying the same charge correction as oasa's occupied-valency
+  computation: a suitable +1/-1 charge on an element that accepts it
+  raises the usable valency by one (e.g. oxonium O+ with 3 bonds,
+  ammonium N+ with 4), any other charge reduces it."""
+  for v in PT.periodic_table[ symbol]['valency']:
+    if not charge:
+      correction = 0
+    elif abs( charge) > 1:
+      correction = abs( charge)
+    elif charge == 1 and symbol in PT.accept_cation and v <= PT.accept_cation[ symbol]:
+      correction = -1
+    elif charge == -1 and symbol in PT.accept_anion and v <= PT.accept_anion[ symbol]:
+      correction = -1
+    else:
+      correction = abs( charge)
+    if occupied + correction <= v:
+      return True
+  return False

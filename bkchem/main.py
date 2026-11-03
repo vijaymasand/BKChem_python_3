@@ -181,7 +181,14 @@ class BKChem( Tk):
     menuf = Frame( self.main_frame, relief=RAISED, bd=config.border_width)
     menuf.grid( row=0, sticky="we")
 
-    self.menu = Pmw.MenuBar( menuf, balloon=self.menu_balloon)
+    # Tk 9 workaround: Pmw 2.1.1's MenuBar does
+    # int(entrycget(item, 'underline')) for existing menu items, but
+    # Tk 9 returns '' instead of -1 for "no underline" (TIP 577),
+    # which raises ValueError and prevents startup. hotkeys=0 makes
+    # Pmw skip that code path entirely. Menus work as before; only
+    # the automatic hotkey underlining of menu labels is disabled.
+    # (On Tk 8.6, e.g. Python 3.12/3.13, this change is not needed.)
+    self.menu = Pmw.MenuBar( menuf, balloon=self.menu_balloon, hotkeys=0)
     self.menu.pack( side="left", expand=1, fill="both")
 
 
@@ -431,7 +438,15 @@ class BKChem( Tk):
 
   def init_singletons( self):
     # preference manager - must be initialized first!
-    Store.pm = pref_manager.pref_manager()
+    # Do not replace a preference manager that is already loaded:
+    # bkchem.py reads prefs.xml (lang, geometry, ...) into Store.pm at
+    # startup, before initialize() runs. Unconditionally assigning an
+    # empty pref_manager() here discarded all of it, so e.g. the saved
+    # window geometry was always lost and 640x480+10+10 was used.
+    if Store.pm is None:
+      Store.pm = pref_manager.pref_manager(
+        [os_support.get_config_filename( "prefs.xml", level="global", mode='r'),
+         os_support.get_config_filename( "prefs.xml", level="personal", mode='r')])
     
     # logger
     Store.logger = logger.logger()
@@ -461,21 +476,16 @@ class BKChem( Tk):
 
   def init_preferences( self):
     # save_dir must be set after the preference manager is initiated
-    # we set the old directory only when the current working directory is
-    # the same as the installation directory and the install was really performed
-    # this is very common on windows, where you mostly start the program via an icon
-    # it is not easy to guess when the right situation occured
-    if os.path.abspath( os_support.get_bkchem_run_dir()) == os.path.abspath( os.getcwd()):
-      # we are running from the installation directory
-      if os_support.site_config != None:
-        # we are probably on Linux after install, go ahead
-        self.save_dir = Store.pm.get_preference( "default-dir")
-      elif sys.path[0].endswith( ".exe"):
-        # we are running on windows from an exe file, good as well
-        self.save_dir = Store.pm.get_preference( "default-dir")
-      else:
-        # otherwise we do not want to reset the path - it could confuse the user
-        pass
+    # restore the directory in which the user last opened or saved a file,
+    # so that the file dialogs reopen there. The former heuristic restored
+    # it only when the working directory was the installation directory,
+    # which is never the case for typical Windows launches (the working
+    # directory is C:\Windows\System32 there), so every dialog used to
+    # start in the working directory instead.
+    default_dir = Store.pm.get_preference( "default-dir")
+    if default_dir and os.path.isdir( default_dir):
+      self.save_dir = default_dir
+      self.svg_dir = default_dir
     for i in range( 5):
       path = Store.pm.get_preference( "recent-file%d" % (i+1))
       if path:
@@ -944,14 +954,14 @@ class BKChem( Tk):
       # is it a gzip file?
       it_is_gzip = 1
       try:
-        str = inp.read()
+        data_str = inp.read()
       except IOError:
         # not a gzip file
         it_is_gzip = 0
       # if it's gzip file parse it
       if it_is_gzip:
         try:
-          doc = dom.parseString( str)
+          doc = dom.parseString( data_str)
         except:
           Store.log( _("error reading file"))
           inp.close()
@@ -1107,6 +1117,7 @@ class BKChem( Tk):
                            filetypes=types)
       if a:
         filename = a
+        self.save_dir = os.path.split( a)[0] or self.save_dir
       else:
         return 0
     # we have filename already
@@ -1174,6 +1185,7 @@ class BKChem( Tk):
     else:
       a = filename
     if a:
+      self.save_dir = os.path.split( a)[0] or self.save_dir
       if not config.debug:
         try:
           doc = exporter.write_to_file( a)

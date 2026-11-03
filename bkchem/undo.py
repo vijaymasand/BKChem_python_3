@@ -292,7 +292,7 @@ class state_record:
     for o in deleted:
       if o.object_type not in ( 'molecule','mark') and hasattr( o, 'draw'):
         # no_automatic where possible
-        if 'automatic' in inspect.getargspec( o.draw)[0]:
+        if 'automatic' in inspect.getfullargspec( o.draw)[0]:
           o.draw( automatic = "none")
         else:
           o.draw()

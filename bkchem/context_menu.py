@@ -25,6 +25,7 @@ from .oasa import periodic_table as PT
 import os
 from .atom import atom
 from .group import group
+from .textatom import textatom
 
 import types
 from . import interactors
@@ -122,8 +123,12 @@ class context_menu( tkinter.Menu):
     """little more enhanced version of misc.set_attr_or_property"""
     if name in setter_functions:
       f = setter_functions[ name]
-      f( o, value)
-      self.changes_made = 1
+      if f( o, value) is not False:
+        # setters return None or True on success; False means the
+        # change was refused (e.g. set_symbol could not replace the
+        # atom) - in that case nothing changed and no undo record
+        # must be started for it
+        self.changes_made = 1
     else:
       if misc.set_attr_or_property( o, name, value):
         o.redraw()
@@ -341,11 +346,22 @@ def set_bond_width( o, value):
 
 def set_symbol( a, name):
   v = a.molecule.create_vertex_according_to_text( a, name, interpret=True)
+  if v is None or isinstance( v, textatom):
+    # The name could not be interpreted as an atom, query atom or group
+    # that fits the valency already occupied by the existing bonds of a
+    # (create_vertex_according_to_text() then silently falls back to a
+    # plain text atom). Replacing a with such a text label would only
+    # *look* like a substitution - the bonds would point to an object
+    # that is not part of the chemistry - so refuse the replacement,
+    # leave a and its bonds completely untouched and tell the user.
+    Store.log( _("Can not replace: \"%s\" does not fit this atom") % name, message_type="error")
+    return False
   a.copy_settings( v)
   a.molecule.replace_vertices( a, v)
   a.delete()
   v.draw()
   [b.redraw() for b in v.get_neighbor_edges()]
+  return True
 
 
 def set_mark_size( o, value):

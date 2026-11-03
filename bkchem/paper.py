@@ -506,15 +506,15 @@ class chem_paper( Canvas, object):
           to_delete += [a]
       else:
         a.redraw()
-    map( self.stack.remove, to_delete)
+    [self.stack.remove( o) for o in to_delete]
     [o.delete() for o in to_delete]
     # Force canvas update to refresh display after arrow deletion
     self.update()
     self.update_idletasks()
     # PLUS
-    to_delete = filter( lambda o: o.object_type == 'plus', self.selected)
-    map( lambda o: o.delete(), to_delete)
-    map( self.stack.remove, to_delete)
+    to_delete = [o for o in self.selected if o.object_type == 'plus']
+    [o.delete() for o in to_delete]
+    [self.stack.remove( o) for o in to_delete]
     # TEXT
     to_delete = filter( lambda o: o.object_type == 'text', self.selected)
     for t in to_delete:
@@ -533,7 +533,7 @@ class chem_paper( Canvas, object):
             to_delete += [a]
         else:
           a.redraw()
-    map( self.stack.remove, to_delete)
+    [self.stack.remove( o) for o in to_delete]
     [o.delete() for o in to_delete]
     # BOND AND ATOM
     bonds = [o for o in self.selected if o.object_type == 'bond']
@@ -550,7 +550,7 @@ class chem_paper( Canvas, object):
       if new_mols:
         mols_to_delete.append( mol)
     if new:
-      map( self.stack.remove, mols_to_delete)
+      [self.stack.remove( o) for o in mols_to_delete]
       self.stack.extend( new)
     empty_mols = filter( lambda o: o.is_empty(), self.molecules)
     [self.stack.remove( o) for o in empty_mols]
@@ -1221,8 +1221,7 @@ class chem_paper( Canvas, object):
       else:
         xmaxs = [bboxes[i] for i in range( 0, len( bboxes), 4)] 
         xmins = [bboxes[i] for i in range( 2, len( bboxes), 4)]
-        xs = map( operator.add, xmaxs, xmins)
-        xs = map( operator.div, xs, len(xs)*[2])
+        xs = [ (a+b)/2 for a, b in zip( xmaxs, xmins)]
         x = (max( xs) + min( xs)) / 2 # reduce( operator.add, xs) / len( xs) # this makes mean value rather then center 
       for i in range( len( xs)):
         to_align[i].move( x-xs[i], 0)
@@ -1237,8 +1236,7 @@ class chem_paper( Canvas, object):
       else:
         ymaxs = [bboxes[i] for i in range( 1, len( bboxes), 4)] 
         ymins = [bboxes[i] for i in range( 3, len( bboxes), 4)]
-        ys = map( operator.add, ymaxs, ymins)
-        ys = map( operator.div, ys, len(ys)*[2])
+        ys = [ (a+b)/2 for a, b in zip( ymaxs, ymins)]
         y = (max( ys) + min( ys)) /2 # reduce( operator.add, ys) / len( ys) 
       for i in range( len( ys)):
         to_align[i].move( 0, y-ys[i])
@@ -1430,16 +1428,62 @@ class chem_paper( Canvas, object):
 
 
   def selected_to_real_clipboard_as_SVG( self):
-    """exports selected top_levels as SVG to system clipboard"""
+    """exports selected top_levels as SVG to system clipboard
+
+    On Windows the SVG is registered on the clipboard in two formats
+    at the same time, so that the pasting application can choose:
+      - "image/svg+xml" (registered format, UTF-8 bytes): the format
+        MS Word and other SVG-aware applications (Inkscape, browsers,
+        ...) recognize as an SVG *picture*. Word offers it in Paste
+        Special as "Picture (SVG)" and also uses it for plain Ctrl+V.
+      - CF_UNICODETEXT: the SVG source as plain text, as before, so
+        text editors still paste the source code.
+    With only the text format present (the previous behaviour) Word
+    had nothing to paste but the text, so the SVG source itself was
+    pasted into the document.
+    On other platforms, or if pywin32 is not available, the Tk
+    clipboard is used as before (text format only).
+    """
     cont, unique = self.selected_to_unique_top_levels()
+    if not cont:
+      return
     exporter = xml_writer.SVG_writer( self)
     exporter.full_size = False
     exporter.construct_dom_tree( cont)
-    self.clipboard_clear()
     xml = exporter.get_nicely_formated_document()
     first_line = xml.splitlines()[0]
     if first_line.startswith("<?") and first_line.endswith("?>"):
       xml = "\n".join( xml.splitlines()[1:])
+
+    # --- Windows: put both formats on the clipboard in one session ---
+    # (same pywin32 approach as selected_to_real_clipboard_as_image()
+    #  below, which registers a "PNG" format in exactly this way;
+    #  Tk's clipboard can only carry text, so it cannot be used here,
+    #  and the two clipboards must not be mixed in one operation)
+    try:
+      import win32clipboard
+      import win32con
+    except ImportError:
+      win32clipboard = None
+
+    if win32clipboard is not None:
+      try:
+        win32clipboard.OpenClipboard()
+        try:
+          win32clipboard.EmptyClipboard()
+          svg_format = win32clipboard.RegisterClipboardFormat( "image/svg+xml")
+          win32clipboard.SetClipboardData( svg_format, xml.encode( 'utf-8'))
+          win32clipboard.SetClipboardData( win32con.CF_UNICODETEXT, xml)
+        finally:
+          win32clipboard.CloseClipboard()
+        Store.log( _("selected top_levels were exported to clipboard in SVG"))
+        return
+      except Exception as e:
+        Store.log( _("Failed to write SVG to clipboard: %s") % str(e), message_type="error")
+        # fall through to the Tk clipboard below
+
+    # --- fallback: Tk clipboard, text format only (previous behaviour) ---
+    self.clipboard_clear()
     self.clipboard_append( xml)
     Store.log( _("selected top_levels were exported to clipboard in SVG"))
 
@@ -2013,7 +2057,7 @@ class chem_paper( Canvas, object):
       root.appendChild( st.get_package( doc))
       dom_extensions.safe_indent( root)
       try:
-        f = file( name, 'w')
+        f = open( name, 'wb')
       except IOError:
         return 0
       try:

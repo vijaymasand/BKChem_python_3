@@ -149,11 +149,11 @@ note that this is not an ODF (Open Document Format) export."""
     # the export itself
     if b.type in 'nhd':
       for i in items:
-        coords = map( Screen.px_to_cm, self.paper.coords( i))
+        coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
         self.create_oo_line( coords, page, style_name)
     elif b.type == 'o':
       for i in items:
-        x, y, x2, y2 = map( Screen.px_to_cm, self.paper.coords( i))
+        x, y, x2, y2 = list( map( Screen.px_to_cm, self.paper.coords( i)))
         size = Screen.px_to_cm( x2-x)
         dom_extensions.elementUnder( page, 'draw:ellipse',
                                      (( 'svg:x', '%fcm' %  x),
@@ -167,7 +167,7 @@ note that this is not an ODF (Open Document Format) export."""
                           stroke_width=Screen.px_to_cm( b.wedge_width))
       b_style_name = self.get_appropriate_style_name( s)
       for i in items:
-        coords = map( Screen.px_to_cm, self.paper.coords( i))
+        coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
         self.create_oo_line( coords, page, b_style_name)
     elif b.type == 'w':
       s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( b.line_color),
@@ -175,7 +175,7 @@ note that this is not an ODF (Open Document Format) export."""
                           stroke_width=Screen.px_to_cm( b.line_width))
       style_name = self.get_appropriate_style_name( s)
       for i in items:
-        coords = map( Screen.px_to_cm, self.paper.coords( i))
+        coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
         point_array = []
         for i in range( 0, len( coords), 2):
           point_array.append( (coords[i], coords[i+1]))
@@ -192,7 +192,7 @@ note that this is not an ODF (Open Document Format) export."""
         self.create_oo_polyline( points, page, style_name)
     # line_items
     for i in line_items:
-      coords = map( Screen.px_to_cm, self.paper.coords( i))
+      coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
       self.create_oo_line( coords, page, style_name)
 
 
@@ -200,7 +200,7 @@ note that this is not an ODF (Open Document Format) export."""
   def add_atom( self, a, page):
     """adds atom to document"""
     if a.show:
-      coords = map( Screen.px_to_cm, self.paper.coords( a.selector))
+      coords = list( map( Screen.px_to_cm, self.paper.coords( a.selector)))
       # we need to use negative padding of the text because oo puts too much space above
       # and under text
       dy = abs( coords[3]-coords[1])
@@ -249,7 +249,7 @@ note that this is not an ODF (Open Document Format) export."""
     txt_style = text_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family)
     txt_style_name = self.get_appropriate_style_name( txt_style)
 
-    coords = map( Screen.px_to_cm, self.paper.coords( a.selector))
+    coords = list( map( Screen.px_to_cm, self.paper.coords( a.selector)))
     self.create_oo_text( '<ftext>%s</ftext>' % a.xml_ftext, coords, page, para_style_name, txt_style_name, gr_style_name)
 
 
@@ -263,7 +263,7 @@ note that this is not an ODF (Open Document Format) export."""
     txt_style = text_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family)
     txt_style_name = self.get_appropriate_style_name( txt_style)
 
-    coords = map( Screen.px_to_cm, self.paper.coords( a.selector))
+    coords = list( map( Screen.px_to_cm, self.paper.coords( a.selector)))
     self.create_oo_text( '<ftext>+</ftext>', coords, page, para_style_name, txt_style_name, gr_style_name)
 
 
@@ -280,7 +280,7 @@ note that this is not an ODF (Open Document Format) export."""
                             stroke_width=Screen.px_to_cm( l_width))
         style_name = self.get_appropriate_style_name( s)
         ps = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
-        points = [map( Screen.px_to_cm, p) for p in ps]
+        points = [list( map( Screen.px_to_cm, p)) for p in ps]
         self.create_oo_polygon( points, page, style_name)
       # polylines - standard arrows
       elif self.paper.type( item) == "line":
@@ -298,7 +298,7 @@ note that this is not an ODF (Open Document Format) export."""
                             stroke_width=Screen.px_to_cm( l_width))
         style_name = self.get_appropriate_style_name( s)
         ps = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
-        points = [map( Screen.px_to_cm, p) for p in ps]
+        points = [list( map( Screen.px_to_cm, p)) for p in ps]
         if self.paper.itemcget( item, "smooth") == "0":
           self.create_oo_polyline( points, page, style_name)
         else:
@@ -311,7 +311,7 @@ note that this is not an ODF (Open Document Format) export."""
                         fill_color=self.paper.any_color_to_rgb_string( o.area_color),
                         stroke_width=Screen.px_to_cm( o.line_width))
     style_name = self.get_appropriate_style_name( s)
-    points = [map( Screen.px_to_cm, p.get_xy()) for p in o.points]
+    points = [list( map( Screen.px_to_cm, p.get_xy())) for p in o.points]
     self.create_oo_polygon( points, page, style_name)
 
 
@@ -319,7 +319,7 @@ note that this is not an ODF (Open Document Format) export."""
     s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( o.line_color),
                         stroke_width=Screen.px_to_cm( o.line_width))
     style_name = self.get_appropriate_style_name( s)
-    points = [map( Screen.px_to_cm, p.get_xy()) for p in o.points]
+    points = [list( map( Screen.px_to_cm, p.get_xy())) for p in o.points]
     self.create_oo_polyline( points, page, style_name)
 
 
@@ -328,7 +328,7 @@ note that this is not an ODF (Open Document Format) export."""
                         fill_color=self.paper.any_color_to_rgb_string( o.area_color),
                         stroke_width=Screen.px_to_cm( o.line_width))
     style_name = self.get_appropriate_style_name( s)
-    x, y, x2, y2 = map( Screen.px_to_cm, o.coords)
+    x, y, x2, y2 = list( map( Screen.px_to_cm, o.coords))
     dom_extensions.elementUnder( page, 'draw:rect',
                                        (( 'svg:x', '%fcm' %  x),
                                         ( 'svg:y', '%fcm' %  y),
@@ -342,7 +342,7 @@ note that this is not an ODF (Open Document Format) export."""
                         fill_color=self.paper.any_color_to_rgb_string( o.area_color),
                         stroke_width=Screen.px_to_cm( o.line_width))
     style_name = self.get_appropriate_style_name( s)
-    x, y, x2, y2 = map( Screen.px_to_cm, o.coords)
+    x, y, x2, y2 = list( map( Screen.px_to_cm, o.coords))
     dom_extensions.elementUnder( page, 'draw:ellipse',
                                        (( 'svg:x', '%fcm' %  x),
                                         ( 'svg:y', '%fcm' %  y),
@@ -357,7 +357,7 @@ note that this is not an ODF (Open Document Format) export."""
                         stroke_width=Screen.px_to_cm( 0.1))
     style_name = self.get_appropriate_style_name( s)
     for i in o.items:
-      x, y, x2, y2 = map( Screen.px_to_cm, self.paper.coords( i))
+      x, y, x2, y2 = list( map( Screen.px_to_cm, self.paper.coords( i)))
       size = Screen.px_to_cm( o.size)
       dom_extensions.elementUnder( page, 'draw:ellipse',
                                    (( 'svg:x', '%fcm' %  x),
@@ -373,7 +373,7 @@ note that this is not an ODF (Open Document Format) export."""
                         fill_color=self.paper.any_color_to_rgb_string( o.atom.line_color),
                         stroke_width=Screen.px_to_cm( width))
     style_name = self.get_appropriate_style_name( s)
-    coords = map( Screen.px_to_cm, self.paper.coords( i))
+    coords = list( map( Screen.px_to_cm, self.paper.coords( i)))
     self.create_oo_line( coords, page, style_name)
       
 
@@ -385,7 +385,7 @@ note that this is not an ODF (Open Document Format) export."""
     # we must process oval first - it would otherwise cover the lines
     for i in o.items:
       if self.paper.type( i) == "oval":
-        x, y, x2, y2 = map( Screen.px_to_cm, self.paper.coords( i))
+        x, y, x2, y2 = list( map( Screen.px_to_cm, self.paper.coords( i)))
         size = Screen.px_to_cm( o.size)
         dom_extensions.elementUnder( page, 'draw:ellipse',
                                      (( 'svg:x', '%fcm' %  x),
@@ -406,7 +406,7 @@ note that this is not an ODF (Open Document Format) export."""
         #  coords[1] += 0
         #  coords[3] += -1
         # end of hack
-        coords = map( Screen.px_to_cm, coords)
+        coords = list( map( Screen.px_to_cm, coords))
         self.create_oo_line( coords, page, style_name)
         
 
@@ -423,7 +423,7 @@ note that this is not an ODF (Open Document Format) export."""
         x = c
         i = 1
       else:
-        points.append( map( Screen.px_to_cm, (x, c)))
+        points.append( list( map( Screen.px_to_cm, (x, c))))
         i = 0
       
     self.create_oo_polygon( points, page, style_name)
@@ -438,7 +438,7 @@ note that this is not an ODF (Open Document Format) export."""
     txt_style = text_style( font_size='%dpx' % round(a.size*1), font_family=a.atom.font_family)
     txt_style_name = self.get_appropriate_style_name( txt_style)
 
-    coords = map( Screen.px_to_cm, self.paper.bbox( a.items[0]))
+    coords = list( map( Screen.px_to_cm, self.paper.bbox( a.items[0])))
     self.create_oo_text( '<ftext>%s</ftext>' % a.text, coords, page, para_style_name, txt_style_name, gr_style_name)
 
 

@@ -1035,7 +1035,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     [self.paper.delete( i) for i in self.third]
     self.third = []
     if self.items:
-      map( self.paper.delete, self.items)
+      [self.paper.delete( i) for i in self.items]
       self.items = []
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()

@@ -39,6 +39,7 @@ class linear_formula( object):
 
 
   def parse_text( self, text, start_valency=0, end_valency=0, mol=None):
+    raw_text = text
     text = self.expand_abbrevs( text)
     mol = self.parse_form( text, start_valency=start_valency, mol=mol, reverse=False)
     if mol:
@@ -66,6 +67,21 @@ class linear_formula( object):
 
       # remove hydrogens, but only if the molecule is not completely made of them :)
       mol.remove_unimportant_hydrogens()
+
+      # A start/end valency above 1 cannot be represented faithfully: the
+      # dummy bond absorbs it by changing bond orders inside the formula,
+      # so the parser would "succeed" with a chemically different structure
+      # (e.g. COOH parsed with start_valency=3 loses its carbonyl bond).
+      # Accept such a parse only when its structure is identical to the
+      # canonical valency-1 parse of the same text; otherwise fail.
+      if start_valency > 1 or end_valency > 1:
+        canonical = linear_formula( raw_text,
+                                    start_valency=1 if start_valency > 1 else start_valency,
+                                    end_valency=1 if end_valency > 1 else end_valency)
+        if not canonical.molecule:
+          return None
+        if _structure_fingerprint( mol) != _structure_fingerprint( canonical.molecule):
+          return None
 
       # set some objects attributes for later reading
       self.molecule = mol
@@ -319,3 +335,15 @@ if __name__ == "__main__":
   else:
     print("nothing")
 
+
+
+def _structure_fingerprint( mol):
+  """Order-independent fingerprint of a molecule's structure: for every
+  atom its symbol, charge and the multiset of (neighbor symbol, bond
+  order) pairs. Two parses of the same formula text are structurally
+  identical iff their fingerprints are equal."""
+  fp = []
+  for v in mol.vertices:
+    neigh = tuple( sorted( (n.symbol, e.order) for e, n in v.get_neighbor_edge_pairs()))
+    fp.append( (v.symbol, v.charge, neigh))
+  return sorted( fp)
